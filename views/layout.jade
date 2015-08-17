@@ -6,14 +6,21 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='csrf-token', content=_csrf)
     title #{title} - Hackathon Starter
-    != css('main')
-  body
-    include partials/header
+    link(rel="stylesheet", href="../assets/main.css")
+    != js('application')
 
-    .container
+  body.index
+
+    #page-wrapper
       include partials/flash
       block content
 
     include partials/footer
+    
+    != js('jquery.dropotron.min')
+    != js('jquery.scrolly.min')
+    != js('jquery.scrollgress.min')
+    != js('skel.min')
+    != js('util')
+    != js('main')
 
-    != js('application')

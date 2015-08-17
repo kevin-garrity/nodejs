@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var userSchema = new mongoose.Schema({
   email: { type: String, unique: true, lowercase: true },
   password: String,
-
+  customid: String,
   facebook: String,
   twitter: String,
   google: String,
@@ -13,6 +13,7 @@ var userSchema = new mongoose.Schema({
   instagram: String,
   linkedin: String,
   tokens: Array,
+  role: String,
 
   profile: {
     name: { type: String, default: '' },

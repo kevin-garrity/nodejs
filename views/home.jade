@@ -1,27 +1,41 @@
 extends layout
 
 block content
-  h1 Hackathon Starter
-  p.lead A boilerplate for Node.js web applications.
-  hr
-  .row
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
+  include partials/header
+
+  section#banner
+    .inner
+      header
+        h2 Patterson
+      p Video coaching from the world's greatest.
+      footer
+        ul.buttons.vertical
+          li
+            a.button.fit.scrolly(href='#one')
+              | Get started
+    a.more.scrolly(href="#main")
+
+  article#main
+    header.special.container
+      h2 Patterson
+      p We're amazing, truly
+    section.wrapper.style2.container.special-alt
+      header.special.container
+        h2 Patterson
+        p We're amazing, truly
+      .row(class="100%")
+        .12u
+          header
+            h2 What?
+          p That's right.
+          footer
+            ul.buttons
+              li.a.button Whatup
+
+  section.wrapper.style3.container.special
+    header.major
+      h2 Next look at this
+    .row
+      .6u.12u(narrower)
+        section
+          a.image

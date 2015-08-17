@@ -1,0 +1,67 @@
+#channel-image {
+  width: 2em;
+  height: 2em;
+  vertical-align: middle;
+}
+
+#channel-name {
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
+
+#disclaimer {
+  font-size: 0.75em;
+  color: #aeaeae;
+  max-width: 350px;
+}
+
+.post-signin {
+  display: none;
+}
+
+.during-upload {
+  display: none;
+}
+
+.post-upload {
+  display: none;
+}
+
+label {
+  display: block;
+}
+
+input[type="text"], textarea, progress {
+  /*font-size: 0.75em;*/
+  width: 15em;
+  margin-bottom: 1em;
+  padding: 0.5em;
+  font-family: "Open Sans", sans-serif;
+}
+
+textarea {
+  height: 7em;
+}
+
+#upload_div {
+  padding: 15px;
+  background: #CEE8F7;
+  margin-top:15px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+#button {
+  margin-top: 5px;
+}
+
+#disclaimer {
+  display: inline;
+  font-size: 10px;
+  line-height: 10px;
+}
+
+iframe {
+  margin-right: 10px;
+  margin-top: 10px;
+}

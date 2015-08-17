@@ -1,0 +1,119 @@
+extends layout
+
+block content
+	include partials/header_dashboard
+	br
+	br
+	br
+	section.wrapper.style3.container.special
+		header.major
+			h2
+				if user.role == 'Coach'
+					| Coaching 
+				else 
+					| Your 
+				| Applications 
+			
+
+		.search-tabs-wrapper
+			ul.nav.nav-tabs(role="tablist")
+				li.active
+					a(href="#pending" role="tab" data-toggle="tab") Pending
+				li
+					a(href="#accepted" role="tab" data-toggle="tab") Accepted
+				li
+					a(href="#rejected" role="tab" data-toggle="tab") Rejected Applications
+			br
+			.tab-content.search-tabs-content
+				.tab-pane.active(id="pending") 
+					- var val = 0;
+					if pending.length == 0
+						h4 You have no pending applications.
+					else
+						while val < pending.length
+							div(style='border: 1px solid #ECECEC; display: inline-block; padding: 10px; margin: 10px;')
+								h4 #{pending[val].body}
+								if user.role == 'Coach'
+									a.ac-app.btn.btn-success(data-toggle="modal",data-target="#acceptModal", data-application-id="#{pending[val].uniqueString}")
+										| Accept
+									a.ac-rej.btn.btn-danger(data-toggle="modal",data-target="#rejectModal",style='margin-left:5px;', data-application-id="#{pending[val].uniqueString}")
+										| Reject
+							- val++
+				.tab-pane(id="accepted") 
+					- var val = 0;
+					if accepted.length == 0
+						h4 You have no accepted applications, yet.
+					else
+						while val < accepted.length
+							div(style='border: 1px solid #ECECEC; display: inline-block; padding: 10px; margin: 10px;')
+								if user.role == 'Coach'
+									h4 #{accepted[val].body}
+								else 
+									h4 The coaching session will begin after you make your payment
+									form(method='POST')
+										input(type='hidden', name='_csrf', value=_csrf)
+										input(type='hidden', name='appid', value='#{accepted[val].uniqueString}')
+										script(
+										src='https://checkout.stripe.com/checkout.js',
+										class='stripe-button',
+										data-key=publishableKey,
+										data-image='https://s-media-cache-ak0.pinimg.com/originals/e1/32/3c/e1323c800b50ee5d6a6957f86a5464f1.jpg',
+										data-name='Book a Session',
+										data-description='General Instruction ($60)',
+										data-amount='6000')
+							- val++
+				.tab-pane(id="rejected") 
+					- var val = 0;
+					if rejected.length == 0
+						h4 You have not been rejected for any applications.
+					else
+						while val < rejected.length
+							div(style='border: 1px solid #ECECEC; display: inline-block; padding: 10px; margin: 10px;')
+								h4 #{rejected[val].body}
+							- val++
+
+
+		if user.role == 'Coach'
+			#acceptModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+				.modal-dialog(role='document')
+					.modal-content
+						form(method='POST', action='../d/accepted/')
+							input(type='hidden', name='_csrf', value=_csrf)
+							.modal-header
+								button.close(type='button', data-dismiss='modal', aria-label='Close')
+									span(aria-hidden='true') &times;
+								h4#myModalLabel.modal-title What do you need from the athlete?    
+							.modal-body
+								strong
+									| Are you sure you want to accept this application? If you proceed, the athlete will be prompted to make the payment and the session will begin.
+								hr
+								| Please write up a message for the athlete that describes what videos you need from him/her.
+								textarea(style='width:100%; height: 150px; margin-top: 2.5%;', name='requirements')
+							footer
+								ul.buttons
+									li
+										input#appid(type='hidden', name='applicationid')
+									li
+										a.button(type='button', data-dismiss='modal') Cancel        
+									li
+										input.button.special(type='submit', value='Submit')
+								br
+
+			#rejectModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+				.modal-dialog(role='document')
+					.modal-content
+						.modal-header
+							button.close(type='button', data-dismiss='modal', aria-label='Close')
+								span(aria-hidden='true') &times;
+							h4#myModalLabel.modal-title Are you sure you want to reject {#athlete}'s application?    
+						.modal-body
+							| Athletes thrive on feedback -- you can type out some 
+							strong
+								| optional 
+							| feedback about why the athlete's application was rejected.
+							textarea(style='width:100%; height: 150px; margin-top: 2.5%;')
+						.modal-footer
+							a.btn.btn-default(type='button', data-dismiss='modal') Cancel        
+							a#ac-rej-btn.btn.btn-danger(type='button') Reject
+
+	!= js('view.application.js')

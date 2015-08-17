@@ -1,0 +1,40 @@
+extends layout
+
+block content
+	include partials/header_dashboard
+	br
+	br
+	br
+	section.wrapper.style3.container.special
+		header.major
+			h2 Your existing sessions
+
+		- var val = 0 
+		if sessions.length > 0
+			while val < sessions.length
+				if !sessions[val].read 
+					- divClass = 'sessions'
+				else
+					- divClass = 'sessions unread-sessions'
+
+				a(href='/sessions/#{sessions[val].uniqueString}')
+					section.wrapper.style2
+						h5 
+							strong
+								if user.role == 'Player'
+									| Session with #{sessions[val].name.coach}
+								else
+									| Session with #{sessions[val].name.athlete}
+
+						if sessions[val].stage == 'video'
+							h5 Coach is waiting for you to send some videos over. Click here to get started.
+						else if sessions[val].stage == 'report'
+							h5 Coach is still getting his report ready. Sit tight!
+						else if sessions[val].stage == 'closed'
+							h5 This session has been completed. Click here to see the coach's report & suggestions.
+						
+
+				- val++
+		else
+			div.sessions
+				h5 You have no existing sessions. Click <a href='/'>here</a> to apply for coaching.

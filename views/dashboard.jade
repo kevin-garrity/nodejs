@@ -1,0 +1,39 @@
+extends layout
+
+block content
+	include partials/header_dashboard
+	br
+	br
+	br
+	- var val = 0
+
+	section.wrapper.style3.container.special
+		header.major
+			h2 Available Coaches 
+
+		.row
+			.12u
+				while val < coaches.length
+					div(style='text-align: center; border: 1px solid #ECECEC; display: inline-block; padding: 10px; margin: 10px;')
+						if coaches[val].profile.picture
+							img(src='#{coaches[val].profile.picture}')
+						else
+							img(src='#{coaches[val].gravatar(120)}', style='border-radius: 125px;')
+						h4 #{coaches[val].profile.name}
+						p Toronto, Ontario
+						a.button.special(href='/apply/#{coaches[val].customid}')
+							| Apply
+					- val++
+
+				- val = 0
+				while val < xcoaches.length
+					div(style='text-align: center; border: 1px solid #ECECEC; display: inline-block; padding: 10px; margin: 10px;')
+						if xcoaches[val].profile.picture
+							img(src='#{xcoaches[val].profile.picture}')
+						else
+							img(src='#{xcoaches[val].gravatar(120)}', style='border-radius: 125px;')
+						h4 #{xcoaches[val].profile.name}
+						p Toronto Ontario
+						a.button(disabled='true')
+							| Applied
+					- val++

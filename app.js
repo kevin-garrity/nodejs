@@ -26,8 +26,10 @@ var assets = require('connect-assets');
  */
 var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
+var messageController = require('./controllers/message');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+var sessionController = require('./controllers/session');
 
 /**
  * API keys and Passport configuration.
@@ -109,6 +111,16 @@ app.post('/account/profile', passportConf.isAuthenticated, userController.postUp
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
+app.get('/apply/:customid', passportConf.isAuthenticated, messageController.Apply);
+app.get('/applications', passportConf.isAuthenticated, messageController.Applications);
+app.post('/applications', passportConf.isAuthenticated, messageController.ProcessPayment);
+app.get('/d/:application_decision/:application_id', passportConf.isAuthenticated, messageController.Decision);
+app.post('/d/:application_decision/', passportConf.isAuthenticated, messageController.Decision);
+app.get('/sessions', passportConf.isAuthenticated, sessionController.allSessions);
+app.get('/sessions/:sessionid', passportConf.isAuthenticated, sessionController.viewSession);
+app.post('/submitVideo', passportConf.isAuthenticated, sessionController.sendVideos);
+app.post('/submitReport', passportConf.isAuthenticated, sessionController.sendDocuments);
+
 
 /**
  * API examples routes.

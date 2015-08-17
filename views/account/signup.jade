@@ -1,24 +1,38 @@
 extends ../layout
 
 block content
-  .page-header
-    h3 Sign up
-  form.form-horizontal(id='signup-form', method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.col-sm-3.control-label(for='email') Email
-      .col-sm-7
-        input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus)
-    .form-group
-      label.col-sm-3.control-label(for='password') Password
-      .col-sm-7
-        input.form-control(type='password', name='password', id='password', placeholder='Password')
-    .form-group
-      label.col-sm-3.control-label(for='confirmPassword') Confirm Password
-      .col-sm-7
-        input.form-control(type='password', name='confirmPassword', id='confirmPassword', placeholder='Confirm Password')
-    .form-group
-      .col-sm-offset-3.col-sm-7
-        button.btn.btn-success(type='submit')
-          i.fa.fa-user-plus
-          | Signup
+  include ../partials/header
+
+
+
+  article#main
+    header.special.container
+      span.icon.fa-key
+      h2 Sign up
+      p Create an account to get access to some of the world's best coaches.
+
+    section.wrapper.style4.special.container(class="75%")
+      .content
+        form#signup-form(method='POST')
+          input(type='hidden', name='_csrf', value=_csrf)
+          .row(class="50%")
+            .6u.12u(mobile)
+              .form-group
+                input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus='true')
+            .6u.12u(mobile)
+              .form-group
+                input.form-control(type='password', name='password', id='password', placeholder='Password')
+          .row
+            .12u
+              input.form-control(type='text', name='name', id='name', placeholder='Full Name')
+          .row
+            .12u
+              input(type='radio', name='role', value='Player', checked) 
+              | Player
+              input(type='radio', name='role', value='Coach') 
+              | Coach
+          .row
+            .12u
+              ul.buttons
+                li
+                  input.special(type='submit', value="Sign up")

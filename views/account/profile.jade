@@ -1,6 +1,8 @@
 extends ../layout
 
 block content
+  include ../partials/header_dashboard
+
   .page-header
     h3 Profile Information
 
@@ -10,6 +12,10 @@ block content
       label.col-sm-2.control-label(for='email') Email
       .col-sm-4
         input.form-control(type='email', name='email', id='email', value='#{user.email}')
+    .form-group
+      label.col-sm-2.control-label(for='role') Role
+      .col-sm-4
+        | #{user.role}
     .form-group
       label.col-sm-2.control-label(for='name') Name
       .col-sm-4

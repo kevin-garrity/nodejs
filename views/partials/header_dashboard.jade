@@ -1,0 +1,23 @@
+header#header.reveal
+  h1#logo
+    a(href="/", style='margin-right: 50px;') Patterson
+    if user.role == 'Coach'
+      if unread > 0
+        a.tag.button.special(href='/applications') #{unread} New Applications
+      else
+        a.tag.button(href='/applications') Applications
+    else
+      if unread > 0
+        a.tag.button.special(href='/applications') #{unread} Application Updates
+      else
+        a.tag.button(href='/applications') Applications
+  nav#nav
+    ul
+      li.submenu
+        a(href='#') #{user.profile.name}
+        ul
+          li
+            a(href="/account") Account
+          li
+            a(href="/logout") Logout
+

@@ -73,7 +73,8 @@ exports.getSignup = function(req, res) {
 exports.postSignup = function(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  // req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  req.assert('name', 'Full name field is blank.').len(1);
 
   var errors = req.validationErrors();
 
@@ -84,7 +85,12 @@ exports.postSignup = function(req, res, next) {
 
   var user = new User({
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    role: req.body.role,
+    profile: {
+      name: req.body.name,
+    },
+    customid: parseInt(req.body.email, 36) + Date.now() //Random unique ID
   });
 
   User.findOne({ email: req.body.email }, function(err, existingUser) {
@@ -107,9 +113,11 @@ exports.postSignup = function(req, res, next) {
  * Profile page.
  */
 exports.getAccount = function(req, res) {
+
   res.render('account/profile', {
     title: 'Account Management'
   });
+
 };
 
 /**
