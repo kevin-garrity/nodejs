@@ -9,7 +9,8 @@ var workSessionSchema = new mongoose.Schema({
   sessionType: String,
   uniqueString: { type: String, unique: true },
   stage: { type: String, default: 'video' },
-  read: { type: Boolean, default: false },
+  athleteRead: { type: Boolean, default: false },
+  coachRead: { type: Boolean, default: false },
   videos: { type: Array, default: [] },
   documents: { type: Array, default: [] },
   name: {

@@ -2,15 +2,20 @@ header#header.reveal
   h1#logo
     a(href="/", style='margin-right: 50px;') Patterson
     if user.role == 'Coach'
-      if unread > 0
-        a.tag.button.special(href='/applications') #{unread} New Applications
+      if unreadApplications > 0
+        a.tag.button.special(href='/applications') #{unreadApplications} New Applications
       else
         a.tag.button(href='/applications') Applications
     else
-      if unread > 0
-        a.tag.button.special(href='/applications') #{unread} Application Updates
+      if unreadApplications > 0
+        a.tag.button.special(href='/applications') #{unreadApplications} Application Updates
       else
         a.tag.button(href='/applications') Applications
+
+    if unreadSessions > 0
+      a.tag.button.special(href='/sessions', style='margin-left: 10px;') #{unreadSessions} Session Updates
+    else
+      a.tag.button(href='/sessions', style='margin-left: 10px;') Ongoing Sessions
   nav#nav
     ul
       li.submenu

@@ -20,23 +20,24 @@ exports.Apply = function(req, res) {
 
   if(req.user.role == 'Player'){
 
-    User.findOne({ customid : req.params.customid }, function(err, coach){
+    User.findOne({ customid : req.body.coachid }, function(err, coach){
       if(!err){
 
-        console.log("Logging application with coach..."+req.params.customid);
+        console.log("Logging application with coach..."+req.body.coachid);
         var application = new Application({
           athlete: req.user.customid,
-          coach: req.params.customid,
-          name: {
-            athlete: req.user.profile.name,
-            coach: coach.profile.name
+          coach: req.body.coachid,
+          models: {
+            athlete: req.user,
+            coach: coach
           },
-          uniqueString: req.params.customid+req.user.customid,
-          body: 'Hey coach -- you gotta give me a shot!'
+          uniqueString: req.body.coachid+req.user.customid,
+          body: req.body.skills
         });
 
         application.save(function(err) {
           if (err){
+            console.log(err);
             req.flash('errors', { msg: 'Sorry, you have already applied.' });
             res.redirect('/');
           } else {
@@ -85,25 +86,14 @@ exports.ProcessPayment = function(req, res){
   Application.findOneAndRemove({ uniqueString: req.body.appid }, function(err, application){
     if(!err){
       if(application.athlete = req.user.customid){
-        var stripeToken = req.body.stripeToken;
-        var stripeEmail = req.body.stripeEmail;
-        stripe.charges.create({
-          amount: 6000,
-          currency: 'usd',
-          card: stripeToken,
-          description: stripeEmail
-        }, function(err, charge) {
-          if (err && err.type === 'StripeCardError') {
-            req.flash('errors', { msg: 'Your card has been declined.' });
-            res.redirect('/applications');
-          }
+
 
           var session = new WorkSession({
             athlete: req.user.customid,
             coach: application.coach,
             name: {
               athlete: req.user.profile.name,
-              coach: application.name.coach
+              coach: application.models.coach[0].profile.name
             },
             uniqueString: application.uniqueString
           });
@@ -114,25 +104,40 @@ exports.ProcessPayment = function(req, res){
               res.redirect('/applications');
             } else {
 
-              var message = new Message({
-                sessionId: application.uniqueString,
-                messageType: 'vrequest',
-                name: {
-                  athlete: req.user.profile.name,
-                  coach: application.name.coach
-                },
-                body: application.requirements
-              })
+              var stripeToken = req.body.stripeToken;
+              var stripeEmail = req.body.stripeEmail;
+              stripe.charges.create({
+                amount: 6000,
+                currency: 'usd',
+                card: stripeToken,
+                description: stripeEmail
+              }, function(err, charge) {
+                if (err && err.type === 'StripeCardError') {
+                  session.remove();
+                  req.flash('errors', { msg: 'Your card has been declined.' });
+                  res.redirect('/applications');
+                } else {
+                  var message = new Message({
+                    sessionId: application.uniqueString,
+                    messageType: 'vrequest',
+                    name: {
+                      athlete: req.user.profile.name,
+                      coach: application.models.coach[0].profile.name
+                    },
+                    body: application.requirements
+                  })
 
-              message.save(function(err){
-                req.flash('success', { msg: 'Your card has been charged successfully. The session has started.' });
-                console.log(session);
-                res.redirect('/sessions');
-              });
+                  message.save(function(err){
+                    req.flash('success', { msg: 'Your card has been charged successfully. The session has started.' });
+                    console.log(session);
+                    res.redirect('/sessions/'+application.uniqueString);
+                  });
+                }    
+              });         
 
             }
           });
-        });  
+
       }
     } else {
       req.flash('errors', { msg: 'Something broke. :(' });
@@ -148,7 +153,7 @@ exports.Applications = function(req, res){
 
   if(req.user.role == 'Coach'){
 
-    Application.update({ coach: req.user.customid, status :'pending', read: false }, { read: true }, {multi: true}, function(err, num){
+    Application.update({ coach: req.user.customid, status :'pending', coachRead: false }, { coachRead: true }, {multi: true}, function(err, num){
       
       Application.find({ coach: req.user.customid }, function(err, applications) {
         pending = applications.filter(function(el){
@@ -170,9 +175,10 @@ exports.Applications = function(req, res){
 
     }); 
   } else {
-    Application.update({ athlete: req.user.customid, status : { $ne: 'pending' }, read: false }, { read: true }, {multi: true}, function(err, num){
+    Application.update({ athlete: req.user.customid, status : { $ne: 'pending' }, athleteRead: false }, { athleteRead: true }, {multi: true}, function(err, num){
       
       Application.find({ athlete: req.user.customid }, function(err, applications) {
+
         pending = applications.filter(function(el){
           return el.status == 'pending';
         });
@@ -209,7 +215,7 @@ exports.Decision = function(req,res){
       if ( req.user.customid == application.coach ){
         application.status = req.params.application_decision;
         application.requirements = req.body.requirements;
-        application.read = false;
+        application.athleteRead = false;
         application.save(function(err){
           console.log("Saving...");
           if(err){

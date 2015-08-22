@@ -70,7 +70,7 @@ if (!req.user){
 
       var messageCount = 0;
 
-      Application.find({ $or: [ {coach: req.user.customid, status: 'pending', read: false }, {athlete: req.user.customid, status: { $ne: 'pending' }, read: false } ]}, function(err, applications) {
+      Application.find({ $or: [ {coach: req.user.customid, status: 'pending', coachRead: false }, {athlete: req.user.customid, status: { $ne: 'pending' }, athleteRead: false } ]}, function(err, applications) {
         applicationsCount = applications.length; 
         res.render('dashboard', {
           title: 'Dashboard',

@@ -183,7 +183,11 @@ exports.viewSession = function(req, res){
 			// console.log("I am..."+req.user.customid);
 			// console.log("And the session is..."+JSON.stringify(worksession));
 			if(req.user.customid == worksession.coach || req.user.customid == worksession.athlete){
-				worksession.read = false;
+				if(req.user.role == 'Coach')
+					worksession.coachRead = true;
+				else
+					worksession.athleteRead = true;
+
 				worksession.save(function(err){
 					if(err){
 						req.flash('errors', { msg: 'Session save error. Please contact us at hello@patterson.com' });

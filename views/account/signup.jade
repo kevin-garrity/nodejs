@@ -13,26 +13,63 @@ block content
 
     section.wrapper.style4.special.container(class="75%")
       .content
-        form#signup-form(method='POST')
-          input(type='hidden', name='_csrf', value=_csrf)
-          .row(class="50%")
-            .6u.12u(mobile)
-              .form-group
-                input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus='true')
-            .6u.12u(mobile)
-              .form-group
-                input.form-control(type='password', name='password', id='password', placeholder='Password')
-          .row
-            .12u
-              input.form-control(type='text', name='name', id='name', placeholder='Full Name')
-          .row
-            .12u
-              input(type='radio', name='role', value='Player', checked) 
-              | Player
-              input(type='radio', name='role', value='Coach') 
-              | Coach
-          .row
-            .12u
-              ul.buttons
-                li
-                  input.special(type='submit', value="Sign up")
+        .signup-tabs-wrapper
+          ul.nav.nav-tabs(role="tablist")
+            li.active
+              a(href="#athlete" role="tab" data-toggle="tab") Athlete
+            li
+              a(href="#coach" role="tab" data-toggle="tab") Coach
+          br
+          .tab-content.signup-tabs-content
+            .tab-pane.active(id="athlete") 
+              form#signup-form(method='POST')
+                input(type='hidden', name='_csrf', value=_csrf)
+                .row(class="50%")
+                  .6u.12u(mobile)
+                    .form-group
+                      input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus='true')
+                  .6u.12u(mobile)
+                    .form-group
+                      input.form-control(type='password', name='password', id='password', placeholder='Password')
+                  .12u
+                    input.form-control(type='text', name='name', id='name', placeholder='Full Name')
+                  .12u
+                    textarea.form-control(name='desc', placeholder='Give a brief description of yourself -- your background, your strengths and what you need help improving on. Coaches will see this so be precise!', rows='7')
+                .row(style='display: none;')
+                  .12u
+                    input(type='radio', name='role', value='Player', checked) 
+                    | Player
+                    input(type='radio', name='role', value='Coach') 
+                    | Coach
+                .row
+                  .12u
+                    ul.buttons
+                      li
+                        input.special(type='submit', value="Sign up")
+            .tab-pane(id="coach") 
+              form#signup-form(method='POST')
+                input(type='hidden', name='_csrf', value=_csrf)
+                .row(class="50%")
+                  .6u.12u(mobile)
+                    .form-group
+                      input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus='true')
+                  .6u.12u(mobile)
+                    .form-group
+                      input.form-control(type='password', name='password', id='password', placeholder='Password')
+                  .6u.12u(mobile)
+                    input.form-control(type='text', name='name', id='name', placeholder='Full Name')
+                  .6u.12u(mobile)
+                    input.form-control(type='text', name='tagline', id='tagline', placeholder='Title, i.e Trainer @ Sonoma State')
+                  .12u
+                    textarea.form-control(name='desc', placeholder='Please give a brief description of your background, current position & specialties.', rows='7')
+                .row(style='display: none;')
+                  .12u
+                    input(type='radio', name='role', value='Player') 
+                    | Player
+                    input(type='radio', name='role', value='Coach', checked) 
+                    | Coach
+                .row
+                  .12u
+                    ul.buttons
+                      li
+                        input.special(type='submit', value="Sign up")

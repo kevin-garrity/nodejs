@@ -14,13 +14,16 @@ var userSchema = new mongoose.Schema({
   linkedin: String,
   tokens: Array,
   role: String,
+  specialties: { type: Array, default: [] },
+  description: String,
+  title: String,
 
   profile: {
     name: { type: String, default: '' },
     gender: { type: String, default: '' },
     location: { type: String, default: '' },
     website: { type: String, default: '' },
-    picture: { type: String, default: '' }
+    picture: { type: String, default: 'https://www.leanstartupmachine.com/images/default_profile_photo.png' }
   },
 
   resetPasswordToken: String,

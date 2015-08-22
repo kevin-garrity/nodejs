@@ -6,12 +6,13 @@ var applicationSchema = new mongoose.Schema({
 
   athlete: { type: String },
   coach: { type: String },
-  name: {
-  	athlete: { type : String },
-  	coach: { type : String }
+  models: {
+  	athlete: { type : Array, default: [] },
+  	coach: { type : Array, default: [] }
   },
   status: { type: String, default: 'pending' },
-  read: { type: Boolean, default: false },
+  athleteRead: { type: Boolean, default: false },
+  coachRead: { type: Boolean, default: false },
   uniqueString: { type: String, unique: true },
   body: String,
   requirements: String

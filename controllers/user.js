@@ -87,6 +87,8 @@ exports.postSignup = function(req, res, next) {
     email: req.body.email,
     password: req.body.password,
     role: req.body.role,
+    description: req.body.desc,
+    title: req.body.tagline,
     profile: {
       name: req.body.name,
     },
@@ -102,7 +104,10 @@ exports.postSignup = function(req, res, next) {
       if (err) return next(err);
       req.logIn(user, function(err) {
         if (err) return next(err);
-        res.redirect('/');
+        if(user.role == 'Player')
+          res.redirect('/');
+        else
+          res.redirect('/account');
       });
     });
   });
@@ -129,9 +134,8 @@ exports.postUpdateProfile = function(req, res, next) {
     if (err) return next(err);
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
-    user.profile.gender = req.body.gender || '';
-    user.profile.location = req.body.location || '';
-    user.profile.website = req.body.website || '';
+    user.title = req.body.title || '';
+    user.description = req.body.desc || '';
 
     user.save(function(err) {
       if (err) return next(err);

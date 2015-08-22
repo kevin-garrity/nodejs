@@ -7,33 +7,70 @@ block content
 	br
 	- var val = 0
 
+	article#main
+		header.special.container
+			span.icon.fa-sign-in
+			h2 Available Coaches
+			p See a coach you're interested in? Apply!
+
 	section.wrapper.style3.container.special
-		header.major
-			h2 Available Coaches 
 
 		.row
 			.12u
 				while val < coaches.length
-					div(style='text-align: center; border: 1px solid #ECECEC; display: inline-block; padding: 10px; margin: 10px;')
-						if coaches[val].profile.picture
-							img(src='#{coaches[val].profile.picture}')
-						else
-							img(src='#{coaches[val].gravatar(120)}', style='border-radius: 125px;')
-						h4 #{coaches[val].profile.name}
-						p Toronto, Ontario
-						a.button.special(href='/apply/#{coaches[val].customid}')
-							| Apply
+					div(style='border: 1px solid #ECECEC; text-align: left; background: #FBFBFB; border-radius: 5px;')
+						div(style='text-align: left; width: 80%; display: inline-block; padding: 10px; margin: 10px;')
+							strong(style='font-size: 18px;')
+								| #{coaches[val].profile.name}
+							p(style='font-size: 14px; margin: 0;') #{coaches[val].title}
+							p(style='font-style: italic; font-size: 16px; padding-top: 5px; margin-top: 5px; margin-bottom: 20px; border-top: 1px #ECECEC dashed;') #{coaches[val].description}
+							a.ac-app.button.special(data-toggle="modal",data-target="#applyModal", data-application-id="#{coaches[val].customid}")
+								| Apply
+						div(style='display: inline-block; width: 15%; text-align: center;')
+							if coaches[val].profile.picture
+								img(src='#{coaches[val].profile.picture}')
+							else
+								img(src='#{coaches[val].gravatar(120)}', style='border-radius: 125px;')
 					- val++
 
 				- val = 0
 				while val < xcoaches.length
-					div(style='text-align: center; border: 1px solid #ECECEC; display: inline-block; padding: 10px; margin: 10px;')
-						if xcoaches[val].profile.picture
-							img(src='#{xcoaches[val].profile.picture}')
-						else
-							img(src='#{xcoaches[val].gravatar(120)}', style='border-radius: 125px;')
-						h4 #{xcoaches[val].profile.name}
-						p Toronto Ontario
-						a.button(disabled='true')
-							| Applied
+					div(style='border: 1px solid #ECECEC; text-align: left;')
+						div(style='text-align: left; width: 80%; display: inline-block; padding: 10px; margin: 10px;')
+							strong(style='font-size: 18px;')
+								| #{xcoaches[val].profile.name}
+							p(style='font-size: 14px; margin: 0;') #{xcoaches[val].title}
+							p(style='font-style: italic; font-size: 16px; padding-top: 5px; margin-top: 5px; margin-bottom: 20px; border-top: 1px #ECECEC dashed;') #{xcoaches[val].description}
+							a.button(disabled='true')
+								| Applied
+						div(style='display: inline-block; width: 15%; text-align: center;')
+							if xcoaches[val].profile.picture
+								img(src='#{xcoaches[val].profile.picture}')
+							else
+								img(src='#{xcoaches[val].gravatar(120)}', style='border-radius: 125px;')
 					- val++
+
+		if user.role == 'Player'
+			#applyModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+				.modal-dialog(role='document')
+					.modal-content
+						form(method='POST', action='../apply/')
+							input(type='hidden', name='_csrf', value=_csrf)
+							.modal-header
+								button.close(type='button', data-dismiss='modal', aria-label='Close')
+									span(aria-hidden='true') &times;
+								h4#myModalLabel.modal-title What skills do you want to work on?    
+							.modal-body
+								| Please write up a message for the athlete that describes what videos you need from him/her.
+								textarea(style='width:100%; height: 150px; margin-top: 2.5%;', name='skills', placeholder="List out all the skills you'd like help working on separated by commas (i.e dribbling, 3 pt shooting, form)")
+							footer
+								ul.buttons
+									li
+										input#coachid(type='hidden', name='coachid')
+									li
+										a.button(type='button', data-dismiss='modal') Cancel        
+									li
+										input.button.special(type='submit', value='Submit')
+								br
+
+	!= js('view.dashboard.js')

@@ -22,53 +22,53 @@ block content
 			- divClass = 'messages unread-messages'
 		
 		if(messages[val].messageType == 'vrequest' && worksession.stage == 'video')
-			if(user.role == 'Player')
-				section.wrapper.style4.special.container(class="75%")
-					p 
-						| The first step is for you to send the coach some videos. Coach will take a look at the videos and send back a report with feedback. Please read the following message from the coach with instructions.
-						hr
-						blockquote #{messages[val].body}
-						a.btn.btn-success(onclick='$("#upload_div").fadeIn();') + Upload Video(s)
-						div#upload_div(style='display:none;')
-							strong(style='font-size: 14px;') For now, you'll need a YouTube/Google account to upload videos. Sign in to upload -- all videos will be "unlisted".
-							span#signinButton.pre-sign-in
-								br
-								br
-								span.g-signin(data-callback='signinCallback', data-clientid='474818871991-uctoko6ei6bdiootsp7dgae16hgeg99h.apps.googleusercontent.com', data-cookiepolicy='single_host_origin', data-scope='https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube')
-							div.post-signin
-								div
-									input#file(type='file', accept='video/*')
-									a.btn.btn-warning#button Upload
-									div.during-upload
-										p
-											| Uploading to youtube... 
-											span#percent-transferred
-											| % done 
-										progress#upload-progress
-									div.post-upload
-										p 
-											strong
-												| Video is uploaded. Please wait while YouTube processes the video (this can take a while).
-										span.glyphicon.glyphicon-refresh
-										#processing
-											i.fa-spinner.fa.fa-spin(style='font-size: 20px;')
-										#post_upload(style='display: none;')
-											| Video has been processed. Click "choose file" to upload another video.
-									#player
-									p#disclaimer
-										| By uploading a video, you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at 
-										a(href="http://www.youtube.com/t/terms",target="_blank")
-											| http://www.youtube.com/t/terms
-						hr
-						h5 Whenever you're ready, submit your videos.
-						br
-						form#video_form(method='POST', action='/submitVideo')
-							input(type='hidden', name='_csrf', value=_csrf)
-							input(type='hidden', name='sessionid', value='#{worksession.uniqueString}')
-							input.btn.btn-primary#submit-videos(type='submit') 
-			else
-				div(class=divClass)
-					h5 #{messages[val].name.athlete} is currently preparing his videos. You will be notified when they are posted here.
+			section.wrapper.style4.special.container(class="75%")
+				if(user.role == 'Player')
+						p 
+							| The first step is for you to send the coach some videos. Coach will take a look at the videos and send back a report with feedback. Please read the following message from the coach with instructions.
+							hr
+							blockquote #{messages[val].body}
+							a.btn.btn-success(onclick='$("#upload_div").fadeIn();') + Upload Video(s)
+							div#upload_div(style='display:none;')
+								strong(style='font-size: 14px;') For now, you'll need a YouTube/Google account to upload videos. Sign in to upload -- all videos will be "unlisted".
+								span#signinButton.pre-sign-in
+									br
+									br
+									span.g-signin(data-callback='signinCallback', data-clientid='474818871991-uctoko6ei6bdiootsp7dgae16hgeg99h.apps.googleusercontent.com', data-cookiepolicy='single_host_origin', data-scope='https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube')
+								div.post-signin
+									div
+										input#file(type='file', accept='video/*')
+										a.btn.btn-warning#button Upload
+										div.during-upload
+											p
+												| Uploading to youtube... 
+												span#percent-transferred
+												| % done 
+											progress#upload-progress
+										div.post-upload
+											p 
+												strong
+													| Video is uploaded. Please wait while YouTube processes the video (this can take a while).
+											span.glyphicon.glyphicon-refresh
+											#processing
+												i.fa-spinner.fa.fa-spin(style='font-size: 20px;')
+											#post_upload(style='display: none;')
+												| Video has been processed. Click "choose file" to upload another video.
+										#player
+										p#disclaimer
+											| By uploading a video, you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at 
+											a(href="http://www.youtube.com/t/terms",target="_blank")
+												| http://www.youtube.com/t/terms
+							hr
+							h5 Whenever you're ready, submit your videos.
+							br
+							form#video_form(method='POST', action='/submitVideo')
+								input(type='hidden', name='_csrf', value=_csrf)
+								input(type='hidden', name='sessionid', value='#{worksession.uniqueString}')
+								input.btn.btn-primary#submit-videos(type='submit') 
+				else
+					div(class=divClass)
+						h5 #{messages[val].name.athlete} is currently preparing his videos. You will be notified when they are posted here.
 
 		else if(messages[val].messageType == 'videos')
 			section.wrapper.style4.special.container(class="75%")

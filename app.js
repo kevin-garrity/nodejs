@@ -32,6 +32,13 @@ var contactController = require('./controllers/contact');
 var sessionController = require('./controllers/session');
 
 /**
+ * Models
+ */
+
+var Application = require('./models/Application');
+var WorkSession = require('./models/WorkSession');
+
+/**
  * API keys and Passport configuration.
  */
 var secrets = require('./config/secrets');
@@ -83,6 +90,20 @@ app.use(lusca({
 }));
 app.use(function(req, res, next) {
   res.locals.user = req.user;
+  req.unreadSessions = 0;
+  console.log(res.locals.user);
+  next();
+});
+app.use(function(req,res,next){
+  if(res.locals.user){
+    Application.find({ $or: [ {coach: res.locals.user.customid, status: 'pending', coachRead: false }, {athlete: res.locals.user.customid, status: { $ne: 'pending' }, athleteRead: false } ]}, function(err, applications) {
+      res.locals.unreadApplications = applications.length; 
+    });
+    WorkSession.find({ $or: [ {coach: res.locals.user.customid, coachRead: false }, {athlete: res.locals.user.customid, athleteRead: false } ]}, function(err, sessions) {
+      res.locals.unreadSessions = sessions.length;
+    });
+  }
+  
   next();
 });
 app.use(function(req, res, next) {
@@ -111,7 +132,7 @@ app.post('/account/profile', passportConf.isAuthenticated, userController.postUp
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
-app.get('/apply/:customid', passportConf.isAuthenticated, messageController.Apply);
+app.post('/apply/', passportConf.isAuthenticated, messageController.Apply);
 app.get('/applications', passportConf.isAuthenticated, messageController.Applications);
 app.post('/applications', passportConf.isAuthenticated, messageController.ProcessPayment);
 app.get('/d/:application_decision/:application_id', passportConf.isAuthenticated, messageController.Decision);

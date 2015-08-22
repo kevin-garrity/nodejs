@@ -27,11 +27,23 @@ block content
 									| Session with #{sessions[val].name.athlete}
 
 						if sessions[val].stage == 'video'
-							h5 Coach is waiting for you to send some videos over. Click here to get started.
+							h5 
+								if user.role == 'Player'
+									| Coach is waiting for you to send some videos over. Click here to get started.
+								else 
+									| #{sessions[val].name.athlete} is currently preparing videos to send back.
 						else if sessions[val].stage == 'report'
-							h5 Coach is still getting his report ready. Sit tight!
+							h5
+								if user.role == 'Player'
+									| Coach is still getting his report ready. Sit tight!
+								else 
+									| #{sessions[val].name.athlete} is waiting for you to send back a report. Click here to send it once you're done.
 						else if sessions[val].stage == 'closed'
-							h5 This session has been completed. Click here to see the coach's report & suggestions.
+							h5 
+								if user.role == 'Player'
+									| This session has been completed. Click here to see the coach's report & suggestions.
+								else 
+									| This session has been completed
 						
 
 				- val++
