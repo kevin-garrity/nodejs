@@ -28,9 +28,7 @@ block content
 								| Apply
 						div(style='display: inline-block; width: 15%; text-align: center;')
 							if coaches[val].profile.picture
-								img(src='#{coaches[val].profile.picture}')
-							else
-								img(src='#{coaches[val].gravatar(120)}', style='border-radius: 125px;')
+								img(src='#{coaches[val].profile.picture}', style='width: 125px; height: 125px; border-radius: 100px;')
 					- val++
 
 				- val = 0
@@ -45,9 +43,7 @@ block content
 								| Applied
 						div(style='display: inline-block; width: 15%; text-align: center;')
 							if xcoaches[val].profile.picture
-								img(src='#{xcoaches[val].profile.picture}')
-							else
-								img(src='#{xcoaches[val].gravatar(120)}', style='border-radius: 125px;')
+								img(src='#{xcoaches[val].profile.picture}', style='width: 125px; height: 125px; border-radius: 100px;')
 					- val++
 
 		if user.role == 'Player'
