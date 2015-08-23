@@ -71,10 +71,10 @@ block content
 											src='https://checkout.stripe.com/checkout.js',
 											class='stripe-button',
 											data-key=publishableKey,
-											data-image='https://s-media-cache-ak0.pinimg.com/originals/e1/32/3c/e1323c800b50ee5d6a6957f86a5464f1.jpg',
+											data-image='#{accepted[val].models.coach[0].profile.picture}',
 											data-name='Book a Session',
-											data-description='General Instruction ($60)',
-											data-amount='6000')
+											data-description='General Instruction ($#{accepted[val].models.coach[0].price/100})',
+											data-amount='#{accepted[val].models.coach[0].price}')
 
 							- val++
 				.tab-pane(id="rejected") 

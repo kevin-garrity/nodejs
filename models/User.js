@@ -17,6 +17,7 @@ var userSchema = new mongoose.Schema({
   specialties: { type: Array, default: [] },
   description: String,
   title: String,
+  price: { type: Number, default: 6000 },
 
   profile: {
     name: { type: String, default: '' },

@@ -18,7 +18,7 @@ block content
 		.row
 			.12u
 				while val < coaches.length
-					div(style='border: 1px solid #ECECEC; text-align: left; background: #FBFBFB; border-radius: 5px;')
+					div(style='border: 1px solid #ECECEC; margin-top: 20px; margin-bottom: 20px; text-align: left; background: #FBFBFB; border-radius: 5px;')
 						div(style='text-align: left; width: 80%; display: inline-block; padding: 10px; margin: 10px;')
 							strong(style='font-size: 18px;')
 								| #{coaches[val].profile.name}
@@ -33,7 +33,7 @@ block content
 
 				- val = 0
 				while val < xcoaches.length
-					div(style='border: 1px solid #ECECEC; text-align: left;')
+					div(style='border: 1px solid #ECECEC; margin-top: 20px; margin-bottom: 20px; border-radius: 5px; text-align: left;')
 						div(style='text-align: left; width: 80%; display: inline-block; padding: 10px; margin: 10px;')
 							strong(style='font-size: 18px;')
 								| #{xcoaches[val].profile.name}

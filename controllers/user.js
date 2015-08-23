@@ -83,12 +83,14 @@ exports.postSignup = function(req, res, next) {
     return res.redirect('/signup');
   }
 
+
   var user = new User({
     email: req.body.email,
     password: req.body.password,
     role: req.body.role,
     description: req.body.desc,
     title: req.body.tagline,
+    price: parseFloat(req.body.price.replace(/[^0-9.]/g,'')).toFixed(2).replace(".",""),
     profile: {
       name: req.body.name,
     },
