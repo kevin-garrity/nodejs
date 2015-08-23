@@ -1648,6 +1648,32 @@
 		padding: 1em 0 1em 2em;
 	}
 
+	#profilepic {
+		width: 100px; 
+		height: 100px; 
+		border-radius: 50px; 
+		margin-top: 25px; 
+		border: 10px solid white; 
+		opacity: 0.5;
+		background-size: 80px;
+
+
+	}
+
+	#profilepic input {
+		width: 100px;
+		height: 100px;
+		opacity: 0;
+	}
+
+	#profilepic:hover, #profilepic input:hover {
+		cursor: pointer;
+	}
+
+/*	#profilepic:hover, #profilegear:hover{
+		cursor: pointer;
+	}*/
+
 /* Section/Article */
 
 	section.special, article.special {

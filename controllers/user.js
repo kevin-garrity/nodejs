@@ -138,6 +138,7 @@ exports.postUpdateProfile = function(req, res, next) {
     user.profile.name = req.body.name || '';
     user.title = req.body.title || '';
     user.description = req.body.desc || '';
+    user.profile.picture = req.body.ppic || user.profile.picture;
 
     user.save(function(err) {
       if (err) return next(err);

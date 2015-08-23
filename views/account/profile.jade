@@ -2,61 +2,173 @@ extends ../layout
 
 block content
   include ../partials/header_dashboard
+  script(src="https://sdk.amazonaws.com/js/aws-sdk-2.1.45.min.js")
 
   article#main
-    header.special.container
+    header.special.container(style='margin-bottom: 20px;')
       span.icon.fa-sign-in
       h2 Your Profile
       p Edit your login/profile details.
+      label#profilepic(style='background-image:url(#{user.profile.picture})')
+        input#file_chooser(type='file', accept='image/*', style='opacity: 0')
 
-  section.wrapper.style4.special.container(class="75%")              
-    //img(src='#{user.profile.picture}', style='width: 75px; height: 75px; border-radius: 50px; margin-top: -125px;')
+    section.wrapper.style4.special.container(class="75%")              
 
-    form(action='/account/profile', method='POST', style='text-align: left;')
-      input(type='hidden', name='_csrf', value=_csrf)
-      .row
-        .6u.12u(mobile).form-group
-          label.control-label(for='email') Email
-          input.form-control(type='email', name='email', id='email', value='#{user.email}')
-        .6u.12u(mobile).form-group
-          label.control-label(for='name') Name
-          input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
-        if(user.title != undefined)
+
+      form#profileSubmit(action='/account/profile', method='POST', style='text-align: left;')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .row
+          .6u.12u(mobile).form-group
+            label.control-label(for='email') Email
+            input.form-control(type='email', name='email', id='email', value='#{user.email}')
+          .6u.12u(mobile).form-group
+            label.control-label(for='name') Name
+            input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
+          if(user.title != undefined)
+            .12u.form-group
+              label.control-label(for='title') Title
+              input.form-control(type='text', name='title', id='title', value='#{user.title}')
           .12u.form-group
-            label.control-label(for='title') Title
-            input.form-control(type='text', name='title', id='title', value='#{user.title}')
-        .12u.form-group
-          label.control-label(for='desc') Description
-          textarea(name='desc', id='desc', value='#{user.description}')
-            | #{user.description}
-        .12u.form-group
-          button.button.special(type='submit')
-            i.fa.fa-pencil
-            | Update Profile
+            label.control-label(for='desc') Description
+            textarea(name='desc', id='desc', value='#{user.description}')
+              | #{user.description}
+          input(type='hidden', id='ppic', name='ppic')
+          .12u.form-group
+            button.button.special(type='submit')
+              i.fa.fa-pencil
+              | Update Profile
 
-    .page-header(style='text-align: left;')
-      h3 Change Password
+      .page-header(style='text-align: left;')
+        h3 Change Password
 
-    form(action='/account/password', method='POST', style='text-align: left;')
-      input(type='hidden', name='_csrf', value=_csrf)
-      .form-group
-        label.control-label(for='password') New Password
-        input.form-control(type='password', name='password', id='password')
-      .form-group
-        label.control-label(for='confirmPassword') Confirm Password
-        input.form-control(type='password', name='confirmPassword', id='confirmPassword')
-      .form-group.12u
-          button.special.button(type='submit')
-            i.fa.fa-lock
-            | Change Password
+      form(action='/account/password', method='POST', style='text-align: left;')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+          label.control-label(for='password') New Password
+          input.form-control(type='password', name='password', id='password')
+        .form-group
+          label.control-label(for='confirmPassword') Confirm Password
+          input.form-control(type='password', name='confirmPassword', id='confirmPassword')
+        .form-group.12u
+            button.special.button(type='submit')
+              i.fa.fa-lock
+              | Change Password
 
-    .page-header
-      h3 Delete Account
+      .page-header
+        h3 Delete Account
 
-    p You can delete your account, but keep in mind this action is irreversible.
-    form(action='/account/delete', method='POST')
-      input(type='hidden', name='_csrf', value=_csrf)
-      button.btn.btn-danger(type='submit')
-        i.fa.fa-trash
-        | Delete my account
+      p You can delete your account, but keep in mind this action is irreversible.
+      form(action='/account/delete', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        button.btn.btn-danger(type='submit')
+          i.fa.fa-trash
+          | Delete my account
 
+  script.
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      console.log("Launch AWS credentials.");
+      var roleArn = 'arn:aws:iam::260752771131:role/admin';
+      var bucketName = 'projectpatterson';
+      var fileArray = [];
+
+      AWS.config.region = 'us-west-2';
+      AWS.config.update({
+          accessKeyId: "AKIAIHTUXVFJM57SCNBA",
+          secretAccessKey: "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"
+      });
+
+      var bucket = new AWS.S3({
+
+        params: {
+
+          Bucket: bucketName,
+          accessKeyId: "AKIAIHTUXVFJM57SCNBA",
+          secretAccessKey: "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"
+
+        }
+
+      });
+
+      var fileChooser = document.getElementById('file_chooser');
+      var button = document.getElementById('file_chooser');
+      var results = document.getElementById('results');
+
+      button.addEventListener('change', function () {
+
+        var file = fileChooser.files[0];
+
+        if (file) {
+
+
+          //Object key will be facebook-USERID#/FILE_NAME
+
+          var objKey = file.name;
+
+          var params = {
+
+            Key: objKey,
+
+            ContentType: file.type,
+
+            Body: file,
+
+            ACL: 'public-read'
+
+          };
+
+          bucket.putObject(params, function (err, data) {
+
+            if (err) {
+
+              alert(err);
+
+            } else {
+
+              alert("Success!");
+              $("#ppic").attr("value", "https://s3-us-west-2.amazonaws.com/projectpatterson/"+file.name);
+              $("#profileSubmit").submit();
+              
+            }
+
+          });
+
+        } else {
+
+          alert('Nothing to upload.');
+
+        }
+
+      }, false);
+
+      function listObjs() {
+        var prefix = "pic";
+        bucket.listObjects({
+
+          Prefix: prefix
+
+        }, function (err, data) {
+          if (err) {
+            results.innerHTML = 'ERROR: ' + err;
+          } else {
+            var objKeys = "";
+            console.log(data);
+            alert(data);
+
+          }
+        });
+      }
+      function decodeEntities(encodedString) {
+          var textArea = document.createElement('textarea');
+          textArea.innerHTML = encodedString;
+          return textArea.value;
+      }
+      $("#document_form").submit(function(){
+        var documents = "";
+        $($.unique(fileArray)).each(function(el){
+          documents += "<input type='hidden' name='documents[]' value='"+ decodeEntities($.unique(fileArray)[el]) +"'>";
+        });
+        $('#document').html(documents);
+      });
+    });
