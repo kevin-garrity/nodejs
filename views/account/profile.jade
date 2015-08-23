@@ -126,8 +126,14 @@ block content
 
             } else {
 
+              function decodeEntities(encodedString) {
+                var textArea = document.createElement('textarea');
+                textArea.innerHTML = encodedString;
+                return textArea.value;
+              }
+
               alert("Success!");
-              $("#ppic").attr("value", "https://s3-us-west-2.amazonaws.com/projectpatterson/"+file.name);
+              $("#ppic").attr("value", "https://s3-us-west-2.amazonaws.com/projectpatterson/"+decodeEntities(file.name));
               $("#profileSubmit").submit();
               
             }
