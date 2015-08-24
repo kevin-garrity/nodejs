@@ -83,6 +83,12 @@ exports.postSignup = function(req, res, next) {
     return res.redirect('/signup');
   }
 
+  var price;
+  if(req.body.price){
+    price = parseFloat(req.body.price.replace(/[^0-9.]/g,'')).toFixed(2).replace(".","");
+  } else {
+    price = 0;
+  }
 
   var user = new User({
     email: req.body.email,
@@ -90,7 +96,7 @@ exports.postSignup = function(req, res, next) {
     role: req.body.role,
     description: req.body.desc,
     title: req.body.tagline,
-    price: parseFloat(req.body.price.replace(/[^0-9.]/g,'')).toFixed(2).replace(".",""),
+    price: price,
     profile: {
       name: req.body.name,
     },

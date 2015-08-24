@@ -133,7 +133,7 @@ block content
               }
 
               alert("Success!");
-              $("#ppic").attr("value", "https://s3-us-west-2.amazonaws.com/projectpatterson/"+decodeEntities(file.name));
+              $("#ppic").attr("value", "https://s3-us-west-2.amazonaws.com/projectpatterson/"+decodeEntities(file.name.replace(" ","+")));
               $("#profileSubmit").submit();
               
             }
