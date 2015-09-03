@@ -22,6 +22,8 @@ block content
 						div(style='text-align: left; width: 80%; display: inline-block; padding: 10px; margin: 10px;')
 							strong(style='font-size: 18px;')
 								| #{coaches[val].profile.name}
+								a.tag.button(style='margin-left: 15px; line-height: 20px;')
+									| $#{coaches[val].price/100}/hr
 							p(style='font-size: 14px; margin: 0;') #{coaches[val].title}
 							p(style='font-style: italic; font-size: 16px; padding-top: 5px; margin-top: 5px; margin-bottom: 20px; border-top: 1px #ECECEC dashed;') #{coaches[val].description}
 							a.ac-app.button.special(data-toggle="modal",data-target="#applyModal", data-application-id="#{coaches[val].customid}")
