@@ -27,7 +27,7 @@ block content
 							p(style='font-size: 14px; margin: 0;') #{coaches[val].title}
 							p(style='font-style: italic; font-size: 16px; padding-top: 5px; margin-top: 5px; margin-bottom: 20px; border-top: 1px #ECECEC dashed;') #{coaches[val].description}
 							a.ac-app.button.special(data-toggle="modal",data-target="#applyModal", data-application-id="#{coaches[val].customid}")
-								| Apply
+								| Apply ($#{coaches[val].price/100}/hr)
 						div(style='display: inline-block; width: 15%; text-align: center; vertical-align: top; margin-top: 2.5%;')
 							if coaches[val].profile.picture
 								img(src='#{coaches[val].profile.picture}', style='width: 80px; height: 80px; border-radius: 100px;')
