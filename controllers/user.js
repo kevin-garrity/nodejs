@@ -132,7 +132,7 @@ exports.postSignup = function(req, res, next) {
     }
     user.save(function(err) {
       if (err) return next(err);
-      sendEmail(user.email, user.profile.name, 'Hey ' + user.profile.name + '\n\nThanks for signing up! We\'re still field testing our system, so please let us know if you have any questions or concerns.\n\nCheers,\nNaeem, Cofounder', 'Congratulations on signing up!');
+      // sendEmail(user.email, user.profile.name, 'Hey ' + user.profile.name + '\n\nThanks for signing up! We\'re still field testing our system, so please let us know if you have any questions or concerns.\n\nCheers,\nNaeem, Cofounder', 'Congratulations on signing up!');
       req.logIn(user, function(err) {
         if (err) return next(err);
         if(user.role == 'Player')
