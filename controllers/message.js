@@ -38,15 +38,11 @@ exports.Apply = function(req, res) {
         application.save(function(err) {
           if (err){
             console.log(err);
-            req.flash('errors', { msg: 'Sorry, you have already applied.' });
-            res.redirect('/');
           } else {
-            Application.find(function(err, messages) {
-              req.flash('success', { msg: 'Your application has been sent -- good luck!' });
-              res.redirect('/');
-            });
+            console.log("HI");
+            return res.send("Hallo");
           }
-        });   
+        });    
 
         }
       });
@@ -95,6 +91,10 @@ exports.ProcessPayment = function(req, res){
               athlete: req.user.profile.name,
               coach: application.models.coach[0].profile.name
             },
+            models: {
+              athlete: req.user,
+              coach: application.models.coach[0]
+            },
             uniqueString: application.uniqueString
           });
 
@@ -119,11 +119,11 @@ exports.ProcessPayment = function(req, res){
                 } else {
                   var message = new Message({
                     sessionId: application.uniqueString,
-                    messageType: 'vrequest',
+                    messageType: 'provideFeedback',
                     name: {
                       athlete: req.user.profile.name,
                       coach: application.models.coach[0].profile.name
-                    },
+                    },              
                     body: application.requirements
                   })
 

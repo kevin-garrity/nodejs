@@ -1,0 +1,81 @@
+extends layout
+
+block content
+	include partials/header_dashboard
+
+	br
+	br
+	br
+	section.wrapper.style3.container.special-alt(style='padding-top: 75px; width: 70%;')
+		.row
+			.12u(style='text-align: center;')
+				label#profilepic(style='background-image:url(#{profile.profile.picture}); margin-top: -45px; border: 9px solid #CDCDCD;')
+			.6u
+				h1(style='margin: 0;')
+					strong
+						| #{profile.profile.name || profile.email}
+				h5(style='margin: 0;') #{profile.title}
+				- var tags = 0
+				if profile.description
+					while tags < profile.description.split(",").length
+						a.tag.btn-success(style='margin-right: 5px; text-transform: uppercase; font-weight: bold; line-height: 20px;')
+							| #{profile.description.split(",")[tags]}
+						- tags++
+			.6u(style='text-align: right;')
+				if profile.role == 'Coach'
+					button.button.special(data-toggle="modal",data-target="#applyModal", data-application-id="#{profile.customid}")
+						| Book now ($#{profile.price/100}/hr)
+			.12u(style='border-bottom: 1px dashed #EFEFEF;')
+			.12u
+				h1 Description
+				p #{profile.story}
+			.12u(style='border-bottom: 1px dashed #EFEFEF;')
+			.12u
+				h1 Videos
+				- var x = 0
+				while x < profile.videos.length
+					iframe(width='32%', style='margin-right: 1%;', height='200', frameborder='0', src='http://www.youtube.com/embed/'+profile.videos[x].split("=")[profile.videos[x].split("=").length-1])
+					- x++
+	if user.role == 'Player'
+		#applyModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+			.modal-dialog(role='document', style='width: 40%;')
+				.modal-content
+					form#applyModalForm(method='POST', action='../apply/')
+						input(type='hidden', name='_csrf', value=_csrf)
+						.modal-header
+							button.close(type='button', data-dismiss='modal', aria-label='Close')
+								span(aria-hidden='true') &times;
+							h4#myModalLabel.modal-title 
+								center
+									| What do you need help on?   
+						.modal-body
+							textarea(style='width:100%; height: 150px; margin-top: 2.5%;', name='skills')
+							center
+								| You don't pay until coach accepts your booking.							
+						footer
+							ul.buttons
+								li
+									input#coachid(type='hidden', name='coachid', value='#{profile.customid}')
+								center
+									li(style='width: 40%;')
+										a.button(type='button', data-dismiss='modal', style='min-width: 100%;') Cancel        
+									li(style='width: 40%;')
+										input#submitApply.button.special(type='button', value='Submit', style='min-width: 100%;')
+							br
+		#successModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+			.modal-dialog(role='document', style='width: 40%;')
+				.modal-content
+					.modal-body
+						center
+							p(style='font-size: 45px; margin-bottom: 25px; margin-top: 15px;')
+								strong
+									| Success!
+							p
+								| We'll notify you 
+								strong
+									| via email 
+								| within 24 hours if your booking has been accepted.
+							button.button.special(onclick="$('#successModal').modal('hide');")
+								| Close
+	script
+		$("#submitApply").click(function(){ $.ajax({ type: 'POST', data: $('#applyModalForm').serialize(), url: '/apply/', success: function(response){ $('#applyModal').modal('hide'); $('#successModal').modal('show'); } }) });

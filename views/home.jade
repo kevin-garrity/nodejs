@@ -5,23 +5,16 @@ block content
 
   section#banner
     .inner
-      header
-        h2 Rookie
-      p 
-        strong
-          | 1-on-1, online coaching from the world's best coaches.
+      p(style='display: none;')
+        | Learn from the best. Become better.
+      img(src='/splash.png')
       footer
         ul.buttons.vertical
           li
-            a.button.fit.scrolly(href='/signup')
-              | Get started
-          li(style='padding: 0; font-size: 16px;')
-            | Sign up and receive 
-            strong
-              | personalized 
-            | coaching & advice from world class coaches on our
-            strong
-              | online platform.
+            a.button.special(href='/signup', style='margin-right: 5px;')
+              | I'm an Athlete
+            a.button(href='/signup?c=1', style='margin-left: 5px;')
+              | I'm a Coach
     a.more.scrolly(href="#main")
 
   article#main

@@ -19,7 +19,7 @@ header#header.reveal
   nav#nav
     ul
       li.submenu
-        a(href='#') #{user.profile.name}
+        a(href='#') #{user.profile.name || user.email}
         ul
           li
             a(href="/account") Account

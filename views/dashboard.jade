@@ -5,70 +5,239 @@ block content
 	br
 	br
 	br
+	script(src="https://sdk.amazonaws.com/js/aws-sdk-2.1.45.min.js")
+	!= css('upload_video.css')
 	- var val = 0
 
-	article#main
-		header.special.container
-			span.icon.fa-sign-in
-			h2 Available Coaches
-			p See a coach you're interested in? Apply!
+	if user.onboarding_level == 1 
+		section.wrapper.style2.container.special-alt(style='margin-bottom: 20px; padding: 40px 50px 0px;')
 
-	section.wrapper.style3.container.special
+			.row(class="50%")
+				.12u
+					header
+						h2(style='display: inline-block; margin: 0;')
+							if user.role == 'Player'
+								| Let's add some videos
+							else
+								| Add some of your coaching videos
+				.5u
+					div(onclick='$("#upload_div").fadeIn(); this.style.display = "none";', style='width: 100%; height: 0; padding-bottom: 45%; background-color: #A2E8DF; padding-top: 10%; font-size: 500%; border: 1px dashed #7FCDC3; color: #7FCDC3; cursor: pointer; text-align: center; line-height: 80%; line-height: 50%;')
+						strong(style='font-size: 20%;')
+							| Upload from Computer
+						br
+						| +
+					div#upload_div(style='display:none;')
+								strong(style='font-size: 14px;') For now, you'll need a YouTube/Google account to upload videos. Sign in to upload -- all videos will be "unlisted".
+								span#signinButton.pre-sign-in
+									br
+									br
+									span.g-signin(data-callback='signinCallback', data-clientid='474818871991-uctoko6ei6bdiootsp7dgae16hgeg99h.apps.googleusercontent.com', data-cookiepolicy='single_host_origin', data-scope='https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube')
+								div.post-signin
+									div
+										input#file(type='file', accept='video/*')
+										a.btn.btn-warning#button Upload
+										div.during-upload
+											p
+												| Uploading to youtube... 
+												span#percent-transferred
+												| % done 
+											progress#upload-progress
+										div.post-upload
+											p 
+												strong
+													| Video is uploaded. Please wait while YouTube processes the video (this can take a while).
+											span.glyphicon.glyphicon-refresh
+											#processing
+												i.fa-spinner.fa.fa-spin(style='font-size: 20px;')
+											#post_upload(style='display: none;')
+												| Video has been processed. Click "choose file" to upload another video.
 
-		.row
-			.12u
+				.2u
+					div(style='font-size: 200%; text-align: center; padding-top: 50%;')
+						strong
+							| - or - 
+				.5u
+					| Or, paste a 
+					strong
+						| YouTube URL
+					input#youtube_url(type='text', style='background: white; border-radius: 4px; color: #3D3D3D; margin-top: 5px;')
+					a.btn.btn-success#upload_url(value='Upload', style='margin-top: 5px; font-size: 14px; min-width: 20%;') Upload
+			.row(class="50%", style='margin-top: 35px; border-top: 1px solid #7FCDC3;')
+				.12u
+					center
+						#player
+				.12u(style='padding-top: 5px;')
+					center
+						form#video_form(method='POST', action='/submitVideo')
+							input(type='hidden', name='_csrf', value=_csrf)
+							input.button.special#submit-videos(type='submit') 
+						a.button(href='/onboard?level=3', style='margin-left: 10px; margin-top: 10px;')
+							| Do it Later
+				.12u(style='padding-top: 5px;')
+					center
+						p#disclaimer
+							| By uploading a video, you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at 
+							a(href="http://www.youtube.com/t/terms",target="_blank")
+								| http://www.youtube.com/t/terms
+
+	if user.onboarding_level == 2
+		section.wrapper.style2.container.special-alt(style='margin-bottom: 20px; ')
+			.row(class="50%")
+				.6u
+					header
+						h2
+							| We'll need a few more details
+						h5
+							| (or click 
+							a(href='/onboard?level=3')
+								strong
+									| here 
+							| to do this later)	
+				.6u
+					form#profileSubmit(action='/account/profile', method='POST', style='text-align: left;')
+						input(type='hidden', name='_csrf', value=_csrf)
+						.12u
+							input.form-control(type='text', name='name', id='name', style='background: white; color: black; width: 100%;', placeholder='Full name', value='#{user.profile.name}')
+						.12u
+							if user.role == 'Player'
+								| What do you need help on? 
+							else
+								| What are your specialties?
+							input.form-control(type="text", name="desc",value="3-pt shooting, ball handling, dribbling", data-role="tagsinput", placeholder="Type a skill & press enter", style='font-size: 10px')
+						if user.role == 'Coach'
+							label
+								| Price
+							input.form-control(type='text', name='price', id='price', style='display: inline-block; background: white; color: black; width: 20%;', placeholder='$60', value='$#{user.price/100}')
+						.12u
+							button.button.special(type='submit', style='min-width: 40%;')
+								i.fa.fa-pencil
+								| Update Profile
+							a.button(href='/onboard?level=3', style='margin-top: 5px; margin-left: 10px; min-width: 40%;')
+								| Skip			
+
+	if user.onboarding_level == 0
+
+		center
+			.container
+				h2 How it works
+				.row
+					.4u
+						section.wrapper.style4
+							h3
+								strong
+									| Step 1
+							hr
+							.12u
+								img(src='http://placehold.it/150')
+							if user.role == 'Player'
+								| Record videos of your game
+							else
+								| Upload videos/details of your coaching
+					.4u
+						section.wrapper.style4
+							h3
+								strong
+									| Step 2
+							hr
+							.12u
+								img(src='http://placehold.it/150')
+							if user.role == 'Player'
+								| Book one of our world-class coaches
+							else
+								| Get booked & paid by high-quality athletes
+					.4u
+						section.wrapper.style4
+							h3
+								strong
+									| Step 3
+							hr
+							.12u
+								img(src='http://placehold.it/150')
+							if user.role == 'Player'
+								| Coach sends back an improvement plan 
+							else
+								| Send them a workout & improvement plan
+					.12u(style='padding:0; margin-bottom: 25px;')
+						a.button.special(href='/onboard?level=1')
+							| Let's get started
+	else
+		.container
+			center
+				strong
+					h2 Book a Coach
+		hr
+		section.wrapper.style5.container.special(style='padding-top: 5px;')
+			.row(style='border-top: 1px dashed #DFDFDF;')
 				while val < coaches.length
-					div(style='border: 1px solid #ECECEC; margin-top: 20px; margin-bottom: 20px; text-align: left; background: #FBFBFB; border-radius: 5px;')
-						div(style='text-align: left; width: 80%; display: inline-block; padding: 10px; margin: 10px;')
-							strong(style='font-size: 18px;')
-								| #{coaches[val].profile.name}
-								a.tag.button(style='margin-left: 15px; line-height: 20px;')
+					.4u(style='padding-top: 0;')
+						div(style='border: 1px solid #ECECEC; margin-top: 20px; margin-bottom: 20px; text-align: left; background: #FBFBFB; border-radius: 5px;')
+							div(style='display: inline-block; width: 100%; text-align: center; vertical-align: top; margin-top: 15%;')
+								if coaches[val].profile.picture
+									img(src='#{coaches[val].profile.picture}', style='width: 80px; height: 80px; border-radius: 100px;')
+							div(style='text-align: center; width: 100%; display: inline-block; padding: 10px;')
+								strong(style='font-size: 18px;')
+									| #{coaches[val].profile.name}
+								p(style='font-size: 14px; margin: 0;') #{coaches[val].title}
+								- var tags = 0
+							div(style='width: 100%; text-align: center; background-color: #F6F6F6; margin-left: 15%; width: 70%; border: 1px dashed #EEEEEE; padding-bottom: 5px;')
+								if coaches[val].description
+									while tags < coaches[val].description.split(",").length
+										a.tag.btn-success(style='margin-left: 5px; text-transform: uppercase; font-weight: bold; line-height: 20px;')
+											| #{coaches[val].description.split(",")[tags]}
+										- tags++
+							div(style='width: 100%; padding-bottom: 20px; padding-top: 20px; text-align: center;')
+								a.ac-app.button.special(style='min-width: 50%; font-size: 14px;', href='../profile/#{coaches[val].customid}')
 									| $#{coaches[val].price/100}/hr
-							p(style='font-size: 14px; margin: 0;') #{coaches[val].title}
-							p(style='font-style: italic; font-size: 16px; padding-top: 5px; margin-top: 5px; margin-bottom: 20px; border-top: 1px #ECECEC dashed;') #{coaches[val].description}
-							a.ac-app.button.special(data-toggle="modal",data-target="#applyModal", data-application-id="#{coaches[val].customid}")
-								| Apply ($#{coaches[val].price/100}/hr)
-						div(style='display: inline-block; width: 15%; text-align: center; vertical-align: top; margin-top: 2.5%;')
-							if coaches[val].profile.picture
-								img(src='#{coaches[val].profile.picture}', style='width: 80px; height: 80px; border-radius: 100px;')
 					- val++
-
+				
 				- val = 0
 				while val < xcoaches.length
-					div(style='border: 1px solid #ECECEC; margin-top: 20px; margin-bottom: 20px; border-radius: 5px; text-align: left;')
-						div(style='text-align: left; width: 80%; display: inline-block; padding: 10px; margin: 10px;')
-							strong(style='font-size: 18px;')
-								| #{xcoaches[val].profile.name}
-							p(style='font-size: 14px; margin: 0;') #{xcoaches[val].title}
-							p(style='font-style: italic; font-size: 16px; padding-top: 5px; margin-top: 5px; margin-bottom: 20px; border-top: 1px #ECECEC dashed;') #{xcoaches[val].description}
-							a.button(disabled='true')
-								| Applied
-						div(style='display: inline-block; width: 15%; text-align: center;')
-							if xcoaches[val].profile.picture
-								img(src='#{xcoaches[val].profile.picture}', style='width: 125px; height: 125px; border-radius: 100px;')
+					.4u(style='padding-top: 0;')
+						div(style='border: 1px solid #ECECEC; margin-top: 20px; margin-bottom: 20px; text-align: left; background: #FBFBFB; border-radius: 5px;')
+							div(style='display: inline-block; width: 100%; text-align: center; vertical-align: top; margin-top: 15%;')
+								if xcoaches[val].profile.picture
+									img(src='#{xcoaches[val].profile.picture}', style='width: 80px; height: 80px; border-radius: 100px;')
+							div(style='text-align: center; width: 100%; display: inline-block; padding: 10px;')
+								strong(style='font-size: 18px;')
+									| #{xcoaches[val].profile.name}
+								p(style='font-size: 14px; margin: 0;') #{xcoaches[val].title}
+								- var tags = 0
+							div(style='width: 100%; text-align: center; background-color: #F6F6F6; margin-left: 15%; width: 70%; border: 1px dashed #EEEEEE; padding-bottom: 5px;')
+								if xcoaches[val].description
+									while tags < xcoaches[val].description.split(",").length
+										a.tag.btn-success(style='margin-left: 5px; text-transform: uppercase; font-weight: bold; line-height: 20px;')
+											| #{xcoaches[val].description.split(",")[tags]}
+										- tags++
+							div(style='width: 100%; padding-bottom: 20px; padding-top: 20px; text-align: center;')
+								a.ac-app.button(style='min-width: 50%; font-size: 14px;', href='../profile/#{xcoaches[val].customid}')
+									| Applied
 					- val++
 
-		if user.role == 'Player'
-			#applyModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
-				.modal-dialog(role='document')
-					.modal-content
-						form(method='POST', action='../apply/')
-							input(type='hidden', name='_csrf', value=_csrf)
-							.modal-header
-								button.close(type='button', data-dismiss='modal', aria-label='Close')
-									span(aria-hidden='true') &times;
-								h4#myModalLabel.modal-title What skills do you want to work on?    
-							.modal-body
-								| List out all the skills you'd like help working on separated by commas (i.e dribbling, 3 pt shooting, form)
-								textarea(style='width:100%; height: 150px; margin-top: 2.5%;', name='skills')
-							footer
-								ul.buttons
-									li
-										input#coachid(type='hidden', name='coachid')
-									li
-										a.button(type='button', data-dismiss='modal') Cancel        
-									li
-										input.button.special(type='submit', value='Submit')
-								br
+			if user.role == 'Player'
+				#applyModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+					.modal-dialog(role='document')
+						.modal-content
+							form(method='POST', action='../apply/')
+								input(type='hidden', name='_csrf', value=_csrf)
+								.modal-header
+									button.close(type='button', data-dismiss='modal', aria-label='Close')
+										span(aria-hidden='true') &times;
+									h4#myModalLabel.modal-title What skills do you want to work on?    
+								.modal-body
+									| List out all the skills you'd like help working on separated by commas (i.e dribbling, 3 pt shooting, form)
+									textarea(style='width:100%; height: 150px; margin-top: 2.5%;', name='skills')
+								footer
+									ul.buttons
+										li
+											input#coachid(type='hidden', name='coachid')
+										li
+											a.button(type='button', data-dismiss='modal') Cancel        
+										li
+											input.button.special(type='submit', value='Submit')
+									br
 
 	!= js('view.dashboard.js')
+	script(src="//apis.google.com/js/client:plusone.js")
+	!= js('cors_upload.js')
+	!= js('upload_video.js')
+	script(src="http://cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js")

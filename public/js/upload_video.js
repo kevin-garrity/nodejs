@@ -14,6 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+$("#upload_url").click(function(){
+  if($("#youtube_url").val().match(/^(?:https?:\/\/)?(?:(?:www|m)\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)){
+    $('#video_form').append("<input type='hidden' name='videos[]' value="+$('#youtube_url').val()+">");
+    $('#player').append("<iframe width='240' height='126' controls='0' src='http://www.youtube.com/embed/"+$('#youtube_url').val().split("=")[$('#youtube_url').val().split("=").length-1]+"'>");
+  }
+});
 var videos = [];
 
 var signinCallback = function (result){
@@ -149,6 +155,7 @@ UploadVideo.prototype.uploadFile = function(file) {
       $('.post-upload').show();
       $("#processing").show();
       $("#post_upload").hide();
+      console.log("Made it here 1");
       this.pollForVideoStatus();
     }.bind(this)
   });
@@ -163,6 +170,7 @@ UploadVideo.prototype.handleUploadClicked = function() {
 };
 
 UploadVideo.prototype.pollForVideoStatus = function() {
+  console.log("Made it here 2");
   this.gapi.client.request({
     path: '/youtube/v3/videos',
     params: {
@@ -170,11 +178,14 @@ UploadVideo.prototype.pollForVideoStatus = function() {
       id: this.videoId
     },
     callback: function(response) {
+      console.log("Made it here 3");
       if (response.error) {
         // The status polling failed.
+        console.log("Made it here 4");
         console.log(response.error.message);
         setTimeout(this.pollForVideoStatus.bind(this), STATUS_POLLING_INTERVAL_MILLIS);
       } else {
+        console.log("Made it here 5");
         var uploadStatus = response.items[0].status.uploadStatus;
         switch (uploadStatus) {
           // This is a non-final status, so we need to poll again.
@@ -183,7 +194,7 @@ UploadVideo.prototype.pollForVideoStatus = function() {
             break;
           // The video was successfully transcoded and is available.
           case 'processed':
-            $('#player').append($(response.items[0].player.embedHtml).attr("width","120").attr("height","64").removeAttr("allowfullscreen").attr("controls","0"));
+            $('#player').append($(response.items[0].player.embedHtml).attr("width","240").attr("height","126").removeAttr("allowfullscreen").attr("controls","0"));
             $('#video_form').append("<input type='hidden' name='videos[]' value="+$(response.items[0].player.embedHtml).attr('src')+">");
             console.log(videos);
             $('#button').attr('disabled', false);

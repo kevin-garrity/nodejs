@@ -19,82 +19,103 @@ exports.allSessions = function(req, res) {
           title: 'Sessions',
           sessions: workSession
         });
+
+
 	})
 
 }
 
+exports.provideVideos = function(req, res){
+	WorkSession.findOne({ uniqueString: req.body.sessionid }, function(err, worksession){
+		if(err){
+			req.flash('errors', { msg: 'Sorry, something went wrong.' });
+			res.redirect('/sessions');
+		}  else {
+			if(worksession.athlete = req.user.customid ){
+				worksession.stage = 'feedback';
+				worksession.save(function(err){
+					if(err){
+						req.flash('errors', { msg: 'Error.' });
+						res.redirect('/sessions/'+worksession.uniqueString);
+					} else {
+						Message.remove({ sessionId: worksession.uniqueString, messageType: 'videorequest' }, function(err){
+							req.flash('success', { msg: 'Videos sent!' });
+							res.redirect('/sessions/'+worksession.uniqueString);
+						});
+					}
+				});
+			}
+		}
+	});
+}
+
+exports.requestVideos = function(req, res){
+	console.log("Called requestVideos");
+	WorkSession.findOne({ uniqueString: req.body.sessionid }, function(err, worksession){
+		console.log("WorkSession findOne ran");
+		if(err){
+			console.log("Erro!");
+			req.flash('errors', { msg: 'Sorry, something went wrong.' });
+			res.redirect('/sessions');
+		}  else {
+			console.log("No error");
+			if(worksession.coach = req.user.customid ){
+				console.log("Check coach validation");
+				worksession.stage = 'videorequest';
+
+				worksession.save(function(err){
+					console.log("Saving worksessions");
+					if(err){
+						console.log("Error saving");
+						req.flash('errors', { msg: 'Error saving documents.' });
+						res.redirect('/sessions');
+					} else {
+						console.log("Creating message");
+						var message = new Message({
+							sessionId: worksession.uniqueString,
+							messageType: 'videorequest',
+							name: {
+							  athlete: req.user.profile.name,
+							  coach: worksession.name.coach
+							},
+							body: req.body.requiredvideos
+						});
+
+						message.save(function(err){
+							console.log("Saving message");
+							if(err){
+								console.log("Msg save fail");
+								req.flash('errors', { msg: 'Error doing things.' });
+								res.redirect('/sessions/'+worksession.uniqueString);
+							} else {
+								console.log("Message saved!");
+								req.flash('success', { msg: 'Request succesfully sent!' });
+								res.redirect('/sessions/'+worksession.uniqueString);
+							}
+						});
+
+					}
+				});
+			}
+		}
+	});
+}
+
 exports.sendVideos = function(req, res){
 
-	console.log("Made it!");
-	if( req.body.sessionid ){
+	User.findById(req.user.id, function(err, user) {
+		if (err) return next(err);
+		for(x=0; x < req.body.videos.length; x++){
+			user.videos.push(req.body.videos[x]);
+		}
+		user.onboarding_level = 2;
 
-		console.log("Hello?");
-		WorkSession.findOne({ uniqueString: req.body.sessionid }, function(err, worksession){
-
-			if(err){
-				req.flash('errors', { msg: 'Video save error.' });
-				res.redirect('/sessions');
-			} else {
-				if(worksession.athlete = req.user.customid ){
-					var messageBody = "";
-					for(x=0; x < req.body.videos.length; x++){
-						worksession.videos.push(req.body.videos[x]);
-						messageBody+= "<iframe width='30%' frameborder='0' height='200' src='" + req.body.videos[x] + "'></iframe>";
-					}
-					worksession.stage = "report";
-					worksession.save(function(err){
-						if(err){
-							req.flash('errors', { msg: 'Error saving video.' });
-							res.redirect('/sessions');
-						} else {
-
-							var message = new Message({
-								sessionId: worksession.uniqueString,
-								messageType: 'videos',
-								name: {
-								  athlete: req.user.profile.name,
-								  coach: worksession.name.coach
-								},
-								body: req.body.videos
-							});
-
-							message.save(function(err){
-								if(err){
-									req.flash('errors', { msg: 'Error saving video.' });
-									res.redirect('/sessions/'+worksession.uniqueString);
-								} else {
-
-									var newMessage = new Message({
-										sessionId: worksession.uniqueString,
-										messageType: 'rrequest',
-										name: {
-										  athlete: req.user.profile.name,
-										  coach: worksession.name.coach
-										}
-									});
-
-									newMessage.save(function(err){
-										if(err){
-											req.flash('errors', { msg: 'Error saving video.' });
-											res.redirect('/sessions/'+worksession.uniqueString);
-										} else {
-											req.flash('success', { msg: 'Videos succesfully saved!' });
-											res.redirect('/sessions/'+worksession.uniqueString);
-										}
-									});
-								}
-							})
-						}
-					});
-				} else {
-					req.flash('errors', { msg: 'You do not have permission to do that.' });
-					res.redirect('/sessions');
-				}
-			}
-
-		})
-
-	}
+		user.save(function(err) {
+			if (err) return next(err);
+			req.flash('success', { msg: 'Videos added.' });
+			res.redirect(req.session.returnTo || '/');
+		});
+	});
 
 }
 

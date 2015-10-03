@@ -96,8 +96,7 @@ exports.postSignup = function(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   // req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
-  req.assert('name', 'Full name field is blank.').len(1);
-
+  
   var errors = req.validationErrors();
 
   if (errors) {
@@ -116,12 +115,6 @@ exports.postSignup = function(req, res, next) {
     email: req.body.email,
     password: req.body.password,
     role: req.body.role,
-    description: req.body.desc,
-    title: req.body.tagline,
-    price: price,
-    profile: {
-      name: req.body.name,
-    },
     customid: parseInt(req.body.email, 36) + Date.now() //Random unique ID
   });
 
@@ -144,6 +137,22 @@ exports.postSignup = function(req, res, next) {
   });
 };
 
+exports.getProfile = function(req, res){
+
+  User.findOne({ customid: req.params.profileid || req.user.customid }, function(err, existingUser) {
+    if (existingUser) {
+      res.render('profile', {
+        title: 'Account Management',
+        profile: existingUser
+      });
+    } else {
+      req.flash('errors', { msg: 'Sorry, that profile doesn\'t exist..' });
+      res.redirect(req.session.returnTo || '/');
+    }
+  });
+
+};
+
 /**
  * GET /account
  * Profile page.
@@ -163,20 +172,35 @@ exports.getAccount = function(req, res) {
 exports.postUpdateProfile = function(req, res, next) {
   User.findById(req.user.id, function(err, user) {
     if (err) return next(err);
-    user.email = req.body.email || '';
-    user.profile.name = req.body.name || '';
-    user.title = req.body.title || '';
-    user.description = req.body.desc || '';
+    user.email = req.body.email || user.email || '';
+    user.profile.name = req.body.name || user.profile.name || '';
+    user.title = req.body.title || user.title || '';
+    user.description = req.body.desc || user.description || '';
     user.profile.picture = req.body.ppic || user.profile.picture;
+    user.price = (req.body.price) ? (parseInt(req.body.price.replace("$","")) * 100) : user.price;
+    if(user.onboarding_level == 2)
+      user.onboarding_level = 3;
 
     user.save(function(err) {
       if (err) return next(err);
       req.flash('success', { msg: 'Profile information updated.' });
-      res.redirect('/account');
+      res.redirect(req.session.returnTo || '/');
     });
   });
 };
 
+
+exports.updateOnboard = function(req, res, next){
+  User.findById(req.user.id, function(err, user) {
+    if (err) return next(err);
+    user.onboarding_level = req.params.level || req.body.level || user.onboarding_level+1;
+
+    user.save(function(err) {
+      if (err) return next(err);
+      res.redirect(req.session.returnTo || '/');
+    });
+  });
+};
 /**
  * POST /account/password
  * Update current password.

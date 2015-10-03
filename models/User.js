@@ -13,10 +13,13 @@ var userSchema = new mongoose.Schema({
   instagram: String,
   linkedin: String,
   tokens: Array,
+  onboarding_level: { type: Number, default: 0 },
+  videos: { type: Array, default: [] },
   role: String,
   specialties: { type: Array, default: [] },
   description: String,
   title: String,
+  story: String,
   price: { type: Number, default: 6000 },
 
   profile: {

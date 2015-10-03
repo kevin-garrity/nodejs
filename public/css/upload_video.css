@@ -10,8 +10,9 @@
 }
 
 #disclaimer {
-  font-size: 0.75em;
-  color: #aeaeae;
+  font-size: 0.4em;
+  color: white;
+  width: 50%;
   max-width: 350px;
 }
 
@@ -21,6 +22,10 @@
 
 .during-upload {
   display: none;
+}
+.bootstrap-tagsinput {
+  width: 100%;
+  border: 0px;
 }
 
 .post-upload {
@@ -45,7 +50,8 @@ textarea {
 
 #upload_div {
   padding: 15px;
-  background: #CEE8F7;
+  background: #A2E8DF;
+  color: #7FCDC3;
   margin-top:15px;
   border-radius: 5px;
   text-align: left;
@@ -57,8 +63,10 @@ textarea {
 
 #disclaimer {
   display: inline;
-  font-size: 10px;
-  line-height: 10px;
+}
+
+#video_form {
+  display: inline-block;
 }
 
 iframe {

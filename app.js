@@ -141,6 +141,11 @@ app.get('/sessions', passportConf.isAuthenticated, sessionController.allSessions
 app.get('/sessions/:sessionid', passportConf.isAuthenticated, sessionController.viewSession);
 app.post('/submitVideo', passportConf.isAuthenticated, sessionController.sendVideos);
 app.post('/submitReport', passportConf.isAuthenticated, sessionController.sendDocuments);
+app.get('/onboard', passportConf.isAuthenticated, userController.updateOnboard);
+app.get('/profile/:profileid', passportConf.isAuthenticated, userController.getProfile);
+app.get('/profile', passportConf.isAuthenticated, userController.getProfile);
+app.post('/requestVideos', passportConf.isAuthenticated, sessionController.requestVideos);
+app.post('/videosReady', passportConf.isAuthenticated, sessionController.provideVideos);
 
 
 /**

@@ -12,7 +12,6 @@ block content
 		header.special.container
 			span.icon.fa-clock-o
 			h2 #{worksession.name.athlete} - #{worksession.name.coach}
-			p This page details your ongoing session together.
 
 	- var val = 0 
 	while val < messages.length
@@ -21,7 +20,64 @@ block content
 		else
 			- divClass = 'messages unread-messages'
 		
-		if(messages[val].messageType == 'vrequest' && worksession.stage == 'video')
+		if(messages[val].messageType == 'videorequest' && worksession.stage == 'videorequest')
+			section.wrapper.style4.special.container(class="75%")
+				if(user.role == 'Coach')
+					p
+						| The athlete is preparing his new videos. We'll email you when they're ready.
+				else
+					h1
+						| Coach needs more videos from you yo.
+					blockquote
+						| #{messages[val].body}
+					p
+						| Click 
+						a(href='/profile') here 
+						| to go to your profile and add them. Once you're done, come back here and hit 
+						strong
+							| the big blue button below.
+						form(method='POST', action='/videosReady')
+								input(type='hidden', name='_csrf', value=_csrf)
+								input(type='hidden', name='sessionid', value='#{worksession.uniqueString}')
+								input.button.special(type='submit', value="Coach, I've added the videos!")
+
+		else if(messages[val].messageType == 'provideFeedback' && worksession.stage == 'feedback')
+			section.wrapper.style4.special.container(class="75%")
+				if(user.role == 'Player')
+					p
+						| Coach is preparing your feedback. Sit tight, 
+						strong
+							| we'll email you 
+						| when it's ready.
+				else
+					h1
+						strong
+							| #{worksession.models.athlete[0].profile.name} needs your help!
+
+					h5 Here are his uploaded videos
+					- var x = 0
+					while x < worksession.models.athlete[0].videos.length
+						iframe(width='32%', style='margin-right: 1%;', height='200', frameborder='0', src='http://www.youtube.com/embed/'+worksession.models.athlete[0].videos[x].split("=")[worksession.models.athlete[0].videos[x].split("=").length-1])
+						- x++
+					.row
+						.6u
+							h1 Need to see more videos?
+							a.button.special(data-toggle="modal",data-target="#requestMoreVideos")
+								| Request more Videos
+						.6u
+							h1 Upload feedback
+							p As many files as you want
+							input(type="file", id="file-chooser")
+							a.btn.btn-success(id="upload-button", style='margin-top: 10px;') Upload
+							div(id="results")
+							br
+							form#document_form(method='POST', action='/submitReport')
+								input(type='hidden', name='_csrf', value=_csrf)
+								input(type='hidden', name='sessionid', value='#{worksession.uniqueString}')
+								input.button.special(type='submit')
+								#document
+
+		else if(messages[val].messageType == 'vrequest' && worksession.stage == 'video')
 			section.wrapper.style4.special.container(class="75%")
 				if(user.role == 'Player')
 						p 
@@ -62,10 +118,6 @@ block content
 							hr
 							h5 Whenever you're ready, submit your videos.
 							br
-							form#video_form(method='POST', action='/submitVideo')
-								input(type='hidden', name='_csrf', value=_csrf)
-								input(type='hidden', name='sessionid', value='#{worksession.uniqueString}')
-								input.btn.btn-primary#submit-videos(type='submit') 
 				else
 					div(class=divClass)
 						h5 #{messages[val].name.athlete} is currently preparing his videos. You will be notified when they are posted here.
@@ -90,11 +142,6 @@ block content
 					a.btn.btn-success(id="upload-button", style='margin-top: 10px;') Upload
 					div(id="results")
 					br
-					form#document_form(method='POST', action='/submitReport')
-						input(type='hidden', name='_csrf', value=_csrf)
-						input(type='hidden', name='sessionid', value='#{worksession.uniqueString}')
-						input.button.special(type='submit')
-						#document
 		else if (messages[val].messageType == "report")
 			section.wrapper.style4.special.container(class="75%")
 				h4 #{messages[val].name.coach} has provided the following analysis of your videos. The session is now over.
@@ -114,6 +161,27 @@ block content
 
 		- val++
 
+
+		#requestMoreVideos.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+			.modal-dialog(role='document')
+				.modal-content
+					form(method='POST', action='../requestVideos')
+						input(type='hidden', name='_csrf', value=_csrf)
+						input(type='hidden', name='sessionid', value='#{worksession.uniqueString}')
+						.modal-header
+							button.close(type='button', data-dismiss='modal', aria-label='Close')
+								span(aria-hidden='true') &times;
+							h4#myModalLabel.modal-title Request more videos   
+						.modal-body
+							| What sorts of videos do you need to see from the athlete?
+							textarea(style='width:100%; height: 150px; margin-top: 2.5%;', name='requiredvideos')
+						footer
+							ul.buttons
+								li
+									a.button(type='button', data-dismiss='modal') Cancel        
+								li
+									input.button.special(type='submit', value='Submit')
+							br
 		script.
 
 			document.addEventListener('DOMContentLoaded', function () {
@@ -222,7 +290,7 @@ block content
 				    textArea.innerHTML = encodedString;
 				    return textArea.value;
 				}
-				$("#document_form").submit(function(){
+				$("#document_form").submit(function(e){
 					var documents = "";
 					$($.unique(fileArray)).each(function(el){
 						documents += "<input type='hidden' name='documents[]' value='"+ decodeEntities($.unique(fileArray)[el]) +"'>";

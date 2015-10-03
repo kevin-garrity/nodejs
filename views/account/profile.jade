@@ -24,14 +24,13 @@ block content
           .6u.12u(mobile).form-group
             label.control-label(for='name') Name
             input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
-          if(user.title != undefined)
-            .12u.form-group
-              label.control-label(for='title') Title
-              input.form-control(type='text', name='title', id='title', value='#{user.title}')
+          .12u.form-group
+            label.control-label(for='title') Title
+            input.form-control(type='text', name='title', id='title', value='#{user.title || ""}')
           .12u.form-group
             label.control-label(for='desc') Description
             textarea(name='desc', id='desc', value='#{user.description}')
-              | #{user.description}
+              | #{user.description || ''}
           input(type='hidden', id='ppic', name='ppic')
           .12u.form-group
             button.button.special(type='submit')
