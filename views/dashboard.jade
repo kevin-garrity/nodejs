@@ -6,7 +6,7 @@ block content
 	br
 	br
 	script(src="https://sdk.amazonaws.com/js/aws-sdk-2.1.45.min.js")
-	!= css('upload_video.css')
+
 	- var val = 0
 
 	if user.onboarding_level == 1 
@@ -176,7 +176,8 @@ block content
 									img(src='#{coaches[val].profile.picture}', style='width: 80px; height: 80px; border-radius: 100px;')
 							div(style='text-align: center; width: 100%; display: inline-block; padding: 10px;')
 								strong(style='font-size: 18px;')
-									| #{coaches[val].profile.name}
+									a(href='../profile/#{coaches[val].customid}')
+										| #{coaches[val].profile.name}
 								p(style='font-size: 14px; margin: 0;') #{coaches[val].title}
 								- var tags = 0
 							div(style='width: 100%; text-align: center; background-color: #F6F6F6; margin-left: 15%; width: 70%; border: 1px dashed #EEEEEE; padding-bottom: 5px;')

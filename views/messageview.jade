@@ -10,8 +10,13 @@ block content
 
 	article#main
 		header.special.container
-			span.icon.fa-clock-o
-			h2 #{worksession.name.athlete} - #{worksession.name.coach}
+			span.icon.fa-clock-o(style='height: initial;')
+			h2 
+				a(href='../profile/#{worksession.models.athlete[0].customid}')
+					| #{worksession.name.athlete} 
+				| - 
+				a(href='../profile/#{worksession.models.coach[0].customid}')
+					| #{worksession.name.coach}
 
 	- var val = 0 
 	while val < messages.length
@@ -32,7 +37,7 @@ block content
 						| #{messages[val].body}
 					p
 						| Click 
-						a(href='/profile') here 
+						a(href='/account#videos') here 
 						| to go to your profile and add them. Once you're done, come back here and hit 
 						strong
 							| the big blue button below.
