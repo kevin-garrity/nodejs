@@ -179,13 +179,13 @@ exports.postUpdateProfile = function(req, res, next) {
     user.description = req.body.desc || user.description || '';
     user.profile.picture = req.body.ppic || user.profile.picture;
     user.price = (req.body.price) ? (parseInt(req.body.price.replace("$","")) * 100) : user.price;
-    if(user.onboarding_level == 2)
-      user.onboarding_level = 3;
+    if(user.onboarding_level < 4)
+      user.onboarding_level++;
 
     user.save(function(err) {
       if (err) return next(err);
       req.flash('success', { msg: 'Profile information updated.' });
-      res.redirect('/account');
+      res.redirect(req.session.returnTo || '/account');
     });
   });
 };

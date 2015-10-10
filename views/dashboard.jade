@@ -1,16 +1,18 @@
 extends layout
 
 block content
-	include partials/header_dashboard
+	if user.onboarding_level > 2
+		include partials/header_dashboard
 	br
 	br
 	br
 	script(src="https://sdk.amazonaws.com/js/aws-sdk-2.1.45.min.js")
+	!= css('upload_video.css')
 
 	- var val = 0
 
-	if user.onboarding_level == 1 
-		section.wrapper.style2.container.special-alt(style='margin-bottom: 20px; padding: 40px 50px 0px;')
+	if user.onboarding_level == 2 
+		section.wrapper.style3.container.special-alt(style='margin-bottom: 20px; padding: 40px 50px 0px;')
 
 			.row(class="50%")
 				.12u
@@ -68,52 +70,56 @@ block content
 						#player
 				.12u(style='padding-top: 5px;')
 					center
-						form#video_form(method='POST', action='/submitVideo')
+						form#video_form(method='POST', action='/submitVideo', style='display: inline-block;')
 							input(type='hidden', name='_csrf', value=_csrf)
 							input.button.special#submit-videos(type='submit') 
 						a.button(href='/onboard?level=3', style='margin-left: 10px; margin-top: 10px;')
 							| Do it Later
 				.12u(style='padding-top: 5px;')
 					center
-						p#disclaimer
+						p#disclaimer(style='font-size: 10px;')
 							| By uploading a video, you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at 
 							a(href="http://www.youtube.com/t/terms",target="_blank")
 								| http://www.youtube.com/t/terms
 
-	if user.onboarding_level == 2
-		section.wrapper.style2.container.special-alt(style='margin-bottom: 20px; ')
+	if user.onboarding_level == 1
+		section.wrapper.style4.container.special-alt(style='margin-bottom: 20px; ')
 			.row(class="50%")
-				.6u
+				.12u
 					header
-						h2
-							| We'll need a few more details
-						h5
-							| (or click 
-							a(href='/onboard?level=3')
-								strong
-									| here 
-							| to do this later)	
-				.6u
+						h2(style='display: inline-bock; margin: 0;')
+							if user.role == 'Coach'
+								| Just a few quick details...
+							else
+								| What are your basketball goals?
+				.12u
 					form#profileSubmit(action='/account/profile', method='POST', style='text-align: left;')
 						input(type='hidden', name='_csrf', value=_csrf)
-						.12u
-							input.form-control(type='text', name='name', id='name', style='background: white; color: black; width: 100%;', placeholder='Full name', value='#{user.profile.name}')
-						.12u
-							if user.role == 'Player'
-								| What do you need help on? 
-							else
-								| What are your specialties?
-							input.form-control(type="text", name="desc",value="3-pt shooting, ball handling, dribbling", data-role="tagsinput", placeholder="Type a skill & press enter", style='font-size: 10px')
+						if user.role != 'Coach'
+							.12u.form-group
+								textarea(name='story', rows='4', id='story', style='width: 100%; background: white;', placeholder='Talk about what your long-term and short-term goals -- dream big?')
+									| #{user.story || ''}
+						.row
+							.6u
+								| What's your full name?
+								input.form-control(type='text', name='name', id='name', style='background: white; color: black; width: 100%;', placeholder='Michael Jordan', value='#{user.profile.name}')
+							.6u
+								if user.role == 'Player'
+									| What do you need help on? 
+								else
+									| What are your specialties?
+								input.form-control(type="text", name="desc",value="3-pt shooting, ball handling, dribbling", data-role="tagsinput", placeholder="Type a skill & press enter", style='font-size: 10px')
 						if user.role == 'Coach'
 							label
 								| Price
 							input.form-control(type='text', name='price', id='price', style='display: inline-block; background: white; color: black; width: 20%;', placeholder='$60', value='$#{user.price/100}')
 						.12u
-							button.button.special(type='submit', style='min-width: 40%;')
-								i.fa.fa-pencil
-								| Update Profile
-							a.button(href='/onboard?level=3', style='margin-top: 5px; margin-left: 10px; min-width: 40%;')
-								| Skip			
+							center
+								button.button.special(type='submit', style='min-width: 40%;')
+									i.fa.fa-pencil
+									| Update Profile
+								a.button(href='/onboard?level=3', style='margin-top: 5px; margin-left: 10px; min-width: 40%;')
+									| Skip			
 
 	if user.onboarding_level == 0
 

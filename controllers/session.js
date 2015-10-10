@@ -108,7 +108,7 @@ exports.sendVideos = function(req, res){
 		for(x=0; x < req.body.videos.length; x++){
 			user.videos.push(req.body.videos[x]);
 		}
-		user.onboarding_level = 2;
+		user.onboarding_level++;
 
 		user.save(function(err) {
 			if (err) return next(err);

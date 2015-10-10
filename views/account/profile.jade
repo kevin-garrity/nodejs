@@ -9,135 +9,140 @@ block content
     .bootstrap-tagsinput
       border: 1px solid #ccc !important; 
   article#main
-    header.special.container(style='margin-bottom: 20px;')
-      span.icon.fa-sign-in
-      h2 Your Profile
-      p Edit your login/profile details.
-      label#profilepic(style='display: inline-block; background-image:url(#{user.profile.picture})')
+    center
+      h2 Edit Your Profile
+      label#profilepic(style='display: inline-block; margin-top: 0px; margin-bottom: 15px; background-image:url(#{user.profile.picture})')
         input#file_chooser(type='file', accept='image/*', style='opacity: 0')
 
-    section.wrapper.style4.special.container(class="75%")              
 
+      section.wrapper.style4.special.container(class="75%")              
+        ul.nav.nav-tabs
+          li.active
+            a(data-toggle="tab", href="#1") Basic Info
+          li
+            a(data-toggle="tab", href="#2") Videos
+          li
+            a(data-toggle="tab", href="#3") Privacy Settings
 
-      form#profileSubmit(action='/account/profile', method='POST', style='text-align: left;')
-        input(type='hidden', name='_csrf', value=_csrf)
-        .row
-          .6u.12u(mobile).form-group
-            label.control-label(for='email') Email
-            input.form-control(type='email', name='email', id='email', value='#{user.email}')
-          .6u.12u(mobile).form-group
-            label.control-label(for='name') Name
-            input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
-          .12u.form-group
-            label.control-label(for='title') Title
-            input.form-control(type='text', name='title', id='title', value='#{user.title || ""}', placeholder='i.e Point Guard @ Sonoma State', style='width: 100%;')
-          .12u.form-group
-            if user.role == 'Player'
-              label.control-label(for='desc') What do you need help on?
-            else
-              label.control-label(for='desc') What are your specialties?
-            input.form-control(type="text", name="desc",value="#{user.description}", data-role="tagsinput", placeholder="Type a skill & press enter", style='font-size: 10px')
-          .12u.form-group
-            label.control-label(for='story') Description
-            textarea(name='story', id='story', style='width: 100%;', value='#{user.story}')
-              | #{user.story || ''}
-          input(type='hidden', id='ppic', name='ppic')
-          .12u.form-group
-            button.button.special(type='submit')
-              i.fa.fa-pencil
-              | Update Profile
-
-      .12u#videos
-        .page-header(style='text-align: left;')
-          h3(style='display: inline-block;') Videos
-          a.btn-info.tag(style='cursor: pointer; display: inline-block; margin-left: 20px; font-size: 18px;', onclick='$("#video_upload_div").toggle();') + Upload
-      .row#video_upload_div(style='background-color: #DDF4FF;border: 1px dashed #4FA6C7;padding: 20px; margin: 0; display: none;')
-        .7u(style='padding: 0;')
-          div(onclick='$("#upload_div").fadeIn(); this.style.display = "none";', style='width: 100%; height: 0px; padding-bottom: 55%; line-height: 20px; padding-top: 10%; font-size: 100%; border: 1px dashed rgb(127, 205, 195); color: rgb(127, 205, 195); cursor: pointer; text-align: center; background-color: rgb(162, 232, 223);')
-            strong
-              | Upload from Computer
-            br
-            | +
-          div#upload_div(style='display:none; background-color: rgb(162, 232, 223);')
-                strong(style='font-size: 14px;') For now, you'll need a YouTube/Google account to upload videos. Sign in to upload -- all videos will be "unlisted".
-                span#signinButton.pre-sign-in
-                  br
-                  br
-                  span.g-signin(data-callback='signinCallback', data-clientid='474818871991-uctoko6ei6bdiootsp7dgae16hgeg99h.apps.googleusercontent.com', data-cookiepolicy='single_host_origin', data-scope='https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube')
-                div.post-signin
-                  div
-                    input#file(type='file', accept='video/*')
-                    a.btn.btn-warning#button Upload
-                    div.during-upload
-                      p
-                        | Uploading to youtube... 
-                        span#percent-transferred
-                        | % done 
-                      progress#upload-progress
-                    div.post-upload
-                      p 
-                        strong
-                          | Video is uploaded. Please wait while YouTube processes the video (this can take a while).
-                      span.glyphicon.glyphicon-refresh
-                      #processing
-                        i.fa-spinner.fa.fa-spin(style='font-size: 20px;')
-                      #post_upload(style='display: none;')
-                        | Video has been processed. Click "choose file" to upload another video.
-
-        .5u
-          | Or, paste a 
-          strong
-            | YouTube URL
-          input#youtube_url(type='text', style='background: white; border-radius: 4px; color: #3D3D3D; width: 100%; margin-top: 5px;')
-          a.btn.btn-success#upload_url(value='Upload', style='margin-top: 5px; font-size: 14px; min-width: 20%;') Upload
-        .12u
-          center
-            #player
-        .12u(style='padding-top: 5px;')
-          center
-            form#video_form(method='POST', action='/submitVideo')
+        .tab-content
+          #1.tab-pane.active
+            form#profileSubmit(action='/account/profile', method='POST', style='text-align: left;')
               input(type='hidden', name='_csrf', value=_csrf)
-              input.button.special#submit-videos(type='submit') 
-            a.button(href='/onboard?level=3', style='margin-left: 10px; margin-top: 10px;')
-              | Do it Later
-        .12u(style='padding-top: 5px; display: none;')
-          center
-            p#disclaimer
-              | By uploading a video, you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at 
-              a(href="http://www.youtube.com/t/terms",target="_blank")
-                | http://www.youtube.com/t/terms
-      - var x = 0
-      while x < user.videos.length
-        iframe(width='32%', style='margin-right: 1%;', height='200', frameborder='0', src='http://www.youtube.com/embed/'+user.videos[x].split("=")[user.videos[x].split("=").length-1])
-        - x++
+              .row
+                .6u.12u(mobile).form-group
+                  label.control-label(for='email') Email
+                  input.form-control(type='email', name='email', id='email', value='#{user.email}')
+                .6u.12u(mobile).form-group
+                  label.control-label(for='name') Name
+                  input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
+                .6u.12u(mobile).form-group
+                  label.control-label(for='title') Title
+                  input.form-control(type='text', name='title', id='title', value='#{user.title || ""}', placeholder='i.e Point Guard', style='width: 100%;')
+                .6u.12u(mobile).form-group
+                  label.control-label(for='organization') Organization
+                  input.form-control(type='text', name='organization', id='organization', value='#{user.organization || ""}', placeholder='i.e Sonoma State', style='width: 100%;')
+                .12u.form-group
+                  if user.role == 'Player'
+                    label.control-label(for='desc') What do you need help on?
+                  else
+                    label.control-label(for='desc') What are your specialties?
+                  input.form-control(type="text", name="desc",value="#{user.description}", data-role="tagsinput", placeholder="Type a skill & press enter", style='font-size: 10px')
+                if user.role == 'Coach'
+                  .12u.form-group
+                    label.control-label(for='story') What can athletes expect?
+                    textarea(name='story', id='story', style='width: 100%;', value='#{user.story}')
+                    | #{user.story || ''}
+                input(type='hidden', id='ppic', name='ppic')
+                .12u.form-group
+                  button.button.special(type='submit')
+                    i.fa.fa-pencil
+                    | Update Profile
+          #2.tab-pane            
+            .12u#videos
+              .page-header(style='text-align: left;')
+                h3(style='display: inline-block;') Videos
+                a.btn-info.tag(style='cursor: pointer; display: inline-block; margin-left: 20px; font-size: 18px;', onclick='$("#video_upload_div").toggle();') + Upload
+            .row#video_upload_div(style='background-color: #DDF4FF;border: 1px dashed #4FA6C7;padding: 20px; margin: 0; display: none;')
+              .7u(style='padding: 0;')
+                div(onclick='$("#upload_div").fadeIn(); this.style.display = "none";', style='width: 100%; height: 0px; padding-bottom: 55%; line-height: 20px; padding-top: 10%; font-size: 100%; border: 1px dashed rgb(127, 205, 195); color: rgb(127, 205, 195); cursor: pointer; text-align: center; background-color: rgb(162, 232, 223);')
+                  strong
+                    | Upload from Computer
+                  br
+                  | +
+                div#upload_div(style='display:none; background-color: rgb(42, 68, 101); color: white;')
+                      strong(style='font-size: 14px;') For now, you'll need a YouTube/Google account to upload videos. Sign in to upload -- all videos will be "unlisted".
+                      span#signinButton.pre-sign-in
+                        br
+                        br
+                        span.g-signin(data-callback='signinCallback', data-clientid='474818871991-uctoko6ei6bdiootsp7dgae16hgeg99h.apps.googleusercontent.com', data-cookiepolicy='single_host_origin', data-scope='https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube')
+                      div.post-signin
+                        div
+                          input#file(type='file', accept='video/*')
+                          a.btn.btn-warning#button Upload
+                          div.during-upload
+                            p
+                              | Uploading to youtube... 
+                              span#percent-transferred
+                              | % done 
+                            progress#upload-progress
+                          div.post-upload
+                            p 
+                              strong
+                                | Video is uploaded. Please wait while YouTube processes the video (this can take a while).
+                            span.glyphicon.glyphicon-refresh
+                            #processing
+                              i.fa-spinner.fa.fa-spin(style='font-size: 20px;')
+                            #post_upload(style='display: none;')
+                              | Video has been processed. Click "choose file" to upload another video.
 
+              .5u
+                | Or, paste a 
+                strong
+                  | YouTube URL
+                input#youtube_url(type='text', style='background: white; border-radius: 4px; color: #3D3D3D; width: 100%; margin-top: 5px;')
+                a.btn.btn-success#upload_url(value='Upload', style='margin-top: 5px; font-size: 14px; min-width: 20%;') Upload
+              .12u
+                center
+                  #player
+              .12u(style='padding-top: 5px;')
+                center
+                  form#video_form(method='POST', action='/submitVideo')
+                    input(type='hidden', name='_csrf', value=_csrf)
+                    input.button.special#submit-videos(type='submit') 
+                  a.button(href='/onboard?level=3', style='margin-left: 10px; margin-top: 10px;')
+                    | Do it Later
+              .12u(style='padding-top: 5px; display: none;')
+                center
+                  p#disclaimer
+                    | By uploading a video, you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at 
+                    a(href="http://www.youtube.com/t/terms",target="_blank")
+                      | http://www.youtube.com/t/terms
+            - var x = 0
+            while x < user.videos.length
+              iframe(width='32%', style='margin-right: 1%;', height='200', frameborder='0', src='http://www.youtube.com/embed/'+user.videos[x].split("=")[user.videos[x].split("=").length-1])
+              - x++
+          #3.tab-pane
+            .page-header(style='text-align: left;')
+              h3 Change Password
 
+            form(action='/account/password', method='POST', style='text-align: left;')
+              input(type='hidden', name='_csrf', value=_csrf)
+              .form-group
+                label.control-label(for='password') New Password
+                input.form-control(type='password', name='password', id='password')
+              .form-group
+                label.control-label(for='confirmPassword') Confirm Password
+                input.form-control(type='password', name='confirmPassword', id='confirmPassword')
+              .form-group.12u
+                  button.special.button(type='submit')
+                    i.fa.fa-lock
+                    | Change Password
 
-      .page-header(style='text-align: left;')
-        h3 Change Password
-
-      form(action='/account/password', method='POST', style='text-align: left;')
-        input(type='hidden', name='_csrf', value=_csrf)
-        .form-group
-          label.control-label(for='password') New Password
-          input.form-control(type='password', name='password', id='password')
-        .form-group
-          label.control-label(for='confirmPassword') Confirm Password
-          input.form-control(type='password', name='confirmPassword', id='confirmPassword')
-        .form-group.12u
-            button.special.button(type='submit')
-              i.fa.fa-lock
-              | Change Password
-
-      .page-header
-        h3 Delete Account
-
-      p You can delete your account, but keep in mind this action is irreversible.
-      form(action='/account/delete', method='POST')
-        input(type='hidden', name='_csrf', value=_csrf)
-        button.btn.btn-danger(type='submit')
-          i.fa.fa-trash
-          | Delete my account
+            form(action='/account/delete', method='POST', style='text-align: left;')
+              input(type='hidden', name='_csrf', value=_csrf)
+              button.btn.btn-danger(type='submit')
+                i.fa.fa-trash
+                | Delete my account
 
   script.
 

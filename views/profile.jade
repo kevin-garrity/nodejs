@@ -6,7 +6,7 @@ block content
 	br
 	br
 	br
-	section.wrapper.style3.container.special-alt(style='padding-top: 75px; width: 70%;')
+	section.wrapper.style3.container.special-alt(style='padding-top: 75px; width: 60%;')
 		.row
 			.12u(style='text-align: center;')
 				label#profilepic(style='background-image:url(#{profile.profile.picture}); margin-top: -45px; border: 9px solid #CDCDCD;')
@@ -25,10 +25,19 @@ block content
 				if profile.role == 'Coach'
 					button.button.special(data-toggle="modal",data-target="#applyModal", data-application-id="#{profile.customid}")
 						| Book now ($#{profile.price/100}/hr)
+					div
+						strong What you'll get
+						p
+							| 1. Pro-level technique evaluation
+							br
+							| 2. In-depth, personalized feedback
+							br
+							| 3. Customized skill development plan
 			.12u(style='border-bottom: 1px dashed #EFEFEF;')
-			.12u
-				h1 Description
-				p #{profile.story}
+			if profile.story
+				.12u
+					h1 What can you expect from me?
+					p #{profile.story}
 			.12u(style='border-bottom: 1px dashed #EFEFEF;')
 			.12u
 				h1 Videos
