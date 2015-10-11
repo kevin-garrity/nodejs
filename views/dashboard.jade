@@ -19,11 +19,11 @@ block content
 					header
 						h2(style='display: inline-block; margin: 0;')
 							if user.role == 'Player'
-								| Let's add some videos
+								| Why not add some videos?
 							else
 								| Add some of your coaching videos
 				.5u
-					div(onclick='$("#upload_div").fadeIn(); this.style.display = "none";', style='width: 100%; height: 0; padding-bottom: 45%; background-color: #A2E8DF; padding-top: 10%; font-size: 500%; border: 1px dashed #7FCDC3; color: #7FCDC3; cursor: pointer; text-align: center; line-height: 80%; line-height: 50%;')
+					div(onclick='$("#upload_div").fadeIn(); this.style.display = "none";', style='width: 100%; height: 0; padding-bottom: 45%; background-color: #A2DBE8; font-size: 500%; border: 1px dashed #7FCDC3; color: #fff; cursor: pointer; text-align: center; line-height: 80%; line-height: 50%;')
 						strong(style='font-size: 20%;')
 							| Upload from Computer
 						br
@@ -97,7 +97,7 @@ block content
 						input(type='hidden', name='_csrf', value=_csrf)
 						if user.role != 'Coach'
 							.12u.form-group
-								textarea(name='story', rows='4', id='story', style='width: 100%; background: white;', placeholder='Talk about what your long-term and short-term goals -- dream big?')
+								textarea(name='story', rows='4', id='story', style='width: 100%; background: white;', placeholder='Talk about what your long-term and short-term goals -- dream big!')
 									| #{user.story || ''}
 						.row
 							.6u
@@ -166,7 +166,7 @@ block content
 					.12u(style='padding:0; margin-bottom: 25px;')
 						a.button.special(href='/onboard?level=1')
 							| Let's get started
-	else
+	else if user.onboarding_level > 2
 		.container
 			center
 				strong
@@ -181,10 +181,11 @@ block content
 								if coaches[val].profile.picture
 									img(src='#{coaches[val].profile.picture}', style='width: 80px; height: 80px; border-radius: 100px;')
 							div(style='text-align: center; width: 100%; display: inline-block; padding: 10px;')
-								strong(style='font-size: 18px;')
+								strong(style='font-size: 22px;')
 									a(href='../profile/#{coaches[val].customid}')
 										| #{coaches[val].profile.name}
-								p(style='font-size: 14px; margin: 0;') #{coaches[val].title}
+								strong(style='font-size: 14px; margin: 0; display: block; overflow: hidden; white-space: nowrap;')	#{coaches[val].title}
+								p(style='font-size: 12px; margin: 0; display: block; text-decoration: italics; overflow: hidden; white-space: nowrap;')	#{coaches[val].organization}
 								- var tags = 0
 							div(style='width: 100%; text-align: center; background-color: #F6F6F6; margin-left: 15%; width: 70%; border: 1px dashed #EEEEEE; padding-bottom: 5px;')
 								if coaches[val].description

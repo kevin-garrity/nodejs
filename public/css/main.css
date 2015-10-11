@@ -2113,6 +2113,7 @@
 		    line-height: 2;
 		    min-width: 0;
 		    font-size: 0.5em;
+		    word-wrap: normal;
 		}
 
 		input[type="button"].fit,

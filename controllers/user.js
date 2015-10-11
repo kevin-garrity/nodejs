@@ -185,7 +185,7 @@ exports.postUpdateProfile = function(req, res, next) {
     user.save(function(err) {
       if (err) return next(err);
       req.flash('success', { msg: 'Profile information updated.' });
-      res.redirect(req.session.returnTo || '/account');
+      res.redirect(req.session.returnTo || '/');
     });
   });
 };
