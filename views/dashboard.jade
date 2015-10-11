@@ -129,40 +129,39 @@ block content
 				.row
 					.4u
 						section.wrapper.style4
-							h3
+							h5(style='text-transform: capitalize;')
 								strong
-									| Step 1
+									if user.role == 'Player'
+										| Record videos of your game
+									else
+										| Upload videos/details of your coaching
 							hr
 							.12u
 								img(src='http://placehold.it/150')
-							if user.role == 'Player'
-								| Record videos of your game
-							else
-								| Upload videos/details of your coaching
+							
 					.4u
 						section.wrapper.style4
-							h3
+							h5(style='text-transform: capitalize;')
 								strong
-									| Step 2
+									if user.role == 'Player'
+										| Book one of our world-class coaches
+									else
+										| Get booked & paid by high-quality athletes
 							hr
 							.12u
 								img(src='http://placehold.it/150')
-							if user.role == 'Player'
-								| Book one of our world-class coaches
-							else
-								| Get booked & paid by high-quality athletes
 					.4u
 						section.wrapper.style4
-							h3
+							h5(style='text-transform: capitalize;')
 								strong
-									| Step 3
+									if user.role == 'Player'
+										| Coach sends back an improvement plan 
+									else
+										| Send them a workout & improvement plan
 							hr
 							.12u
 								img(src='http://placehold.it/150')
-							if user.role == 'Player'
-								| Coach sends back an improvement plan 
-							else
-								| Send them a workout & improvement plan
+							
 					.12u(style='padding:0; margin-bottom: 25px;')
 						a.button.special(href='/onboard?level=1')
 							| Let's get started
