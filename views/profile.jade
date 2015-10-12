@@ -23,16 +23,16 @@ block content
 						- tags++
 			.6u(style='text-align: right;')
 				if profile.role == 'Coach'
-					button.button.special(data-toggle="modal",data-target="#applyModal", data-application-id="#{profile.customid}")
+					button.button.special(data-toggle="modal",data-target="#applyModal", data-application-id="#{profile.customid}", style='width: 100%; max-width: 100%;')
 						| Book now ($#{profile.price/100}/hr)
-					div
-						strong What you'll get
-						p
-							| 1. Pro-level technique evaluation
+					div(style="background: #F8F8F8;border: 1px dashed #E6E6E6;padding: 5%;font-size: 11px;line-height: 2;width: 100%;text-align: center;margin-top: 5%;")
+						strong(style='font-size: 14px;') What happens after you book
+						p(style='text-align: center;')
+							| 1. Coach will look over your videos
 							br
-							| 2. In-depth, personalized feedback
+							| 2. Receive a customized improvement plan
 							br
-							| 3. Customized skill development plan
+							| 3. 1 review session in 2 weeks
 			
 			if profile.story
 				.12u(style='border-bottom: 1px dashed #EFEFEF;')

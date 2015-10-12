@@ -3,14 +3,49 @@ extends layout
 block content
 	if user.onboarding_level > 2
 		include partials/header_dashboard
-	br
-	br
-	br
+
 	script(src="https://sdk.amazonaws.com/js/aws-sdk-2.1.45.min.js")
 	!= css('upload_video.css')
 
 	- var val = 0
-
+	if user.onboarding_level < 3
+		br
+		.progress(style='height: 30px; width: 70%; margin: 0 auto;') 
+			.progress-bar.progress-bar-success(style='width:33.3333%')
+				span(style='line-height: 30px;') 
+					strong
+						| Step 1: 
+					| How it works
+			if user.onboarding_level > 0
+				.progress-bar.progress-bar-success(style='width: 33.3333%;')
+					span(style='line-height: 30px;') 
+						strong
+							| Step 2: 
+						| What are your goals?
+			else
+				.progress-bar.progress-bar-info(style='width: 33.3333%;')
+					span(style='line-height: 30px;') 
+						strong
+							| Step 2: 
+						| What are your goals?
+			if user.onboarding_level > 1
+				.progress-bar.progress-bar-success(style='width: 33.3333%;')
+					span(style='line-height: 30px;') 
+						strong
+							| Step 3: 
+						| Upload videos
+			else
+				.progress-bar.progress-bar-info(style='width: 33.3333%;')
+					span(style='line-height: 30px;') 
+						strong
+							| Step 3: 
+						| Upload videos
+		br
+		br
+	else
+		br
+		br
+		br
 	if user.onboarding_level == 2 
 		section.wrapper.style3.container.special-alt(style='margin-bottom: 20px; padding: 40px 50px 0px;')
 
