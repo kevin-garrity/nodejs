@@ -9,7 +9,6 @@ block content
 
 	- var val = 0
 	if user.onboarding_level < 3
-		br
 		.progress(style='height: 30px; width: 70%; margin: 0 auto;') 
 			.progress-bar.progress-bar-success(style='width:33.3333%')
 				span(style='line-height: 30px;') 
@@ -40,7 +39,6 @@ block content
 						strong
 							| Step 3: 
 						| Upload videos
-		br
 		br
 	else
 		br
@@ -132,15 +130,17 @@ block content
 						input(type='hidden', name='_csrf', value=_csrf)
 						if user.role != 'Coach'
 							.12u.form-group
-								textarea(name='story', rows='4', id='story', style='width: 100%; background: white;', placeholder='Talk about what your long-term and short-term goals -- dream big!')
-									| #{user.story || ''}
+								select(name='story', style='width: 100%;')
+									option(value='NBA') NBA
+									option(value='NCAA') NCAA
+									option(value='High School') High School
 						.row
 							.6u
 								| What's your full name?
 								input.form-control(type='text', name='name', id='name', style='background: white; color: black; width: 100%;', placeholder='Michael Jordan', value='#{user.profile.name}')
 							.6u
 								if user.role == 'Player'
-									| What do you need help on? 
+									| What skills do you want to work on? 
 								else
 									| What are your specialties?
 								input.form-control(type="text", name="desc",value="3-pt shooting, ball handling, dribbling", data-role="tagsinput", placeholder="Type a skill & press enter", style='font-size: 10px')
@@ -167,7 +167,7 @@ block content
 							h5(style='text-transform: capitalize;')
 								strong
 									if user.role == 'Player'
-										| Record videos of your game
+										| You have to upload video in order to receive coaching.
 									else
 										| Upload videos/details of your coaching
 							hr

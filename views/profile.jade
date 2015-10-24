@@ -28,9 +28,9 @@ block content
 					div(style="background: #F8F8F8;border: 1px dashed #E6E6E6;padding: 5%;font-size: 11px;line-height: 2;width: 100%;text-align: center;margin-top: 5%;")
 						strong(style='font-size: 14px;') What happens after you book
 						p(style='text-align: center;')
-							| 1. Coach will look over your videos
+							| 1. Coach will look over your video or suggest new ones you need to upload
 							br
-							| 2. Receive a customized improvement plan
+							| 2. Receive a thorough feedback video and customized improvement plan
 							br
 							| 3. 1 review session in 2 weeks
 			
@@ -81,10 +81,7 @@ block content
 								strong
 									| Success!
 							p
-								| We'll notify you 
-								strong
-									| via email 
-								| within 24 hours if your booking has been accepted.
+								| We'll notify you once #{profile.name.name} has reviewed your request.
 							button.button.special(onclick="$('#successModal').modal('hide');")
 								| Close
 	script
