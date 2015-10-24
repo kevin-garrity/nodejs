@@ -105,8 +105,11 @@ exports.sendVideos = function(req, res){
 
 	User.findById(req.user.id, function(err, user) {
 		if (err) return next(err);
-		for(x=0; x < req.body.videos.length; x++){
-			user.videos.push(req.body.videos[x]);
+		if(req.body.videos){
+			for(x=0; x < req.body.videos.length; x++){
+				user.videos.push(req.body.videos[x]);
+			}
+
 		}
 		user.onboarding_level++;
 
