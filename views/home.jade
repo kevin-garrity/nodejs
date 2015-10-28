@@ -1,20 +1,22 @@
 extends layout
 
 block content
-  include partials/header
+  //include partials/header
 
-  section#banner
+  section#banner(style='padding-top:40px;')
     .inner
+      h1(style='font-size: 20px; font-weight: bold;')
+          | To be the best, take advice from the best
       h1
-        | Learn from the best. Become better.
+        | Rookie lets you get personalized feedback from NBA level  coaches.
       img(src='/splash.png')
+      hr
+      p(style='font-size: 12px; font-weight: bold;') Our app is launching soon. Enter your email and get early access.
+      div#lr-widget(rel="YNVO4NGD")
+      script(src="//ignition.launchrock.com/ignition-current.min.js")
+
       footer
-        ul.buttons.vertical
-          li
-            a.button.special(href='/signup', style='margin-right: 5px;')
-              | I'm an Athlete
-            a.button(href='/signup?c=1', style='margin-left: 5px;')
-              | I'm a Coach
+    
     a.more.scrolly(href="#main")
 
   article#main

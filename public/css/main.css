@@ -7,6 +7,40 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
+/* Launchrock */
+
+.LR-site-bg-color-container {
+	width: 750px !important;
+    background: none !important;
+    position: absolute !important;
+    margin-top: -50px !important;
+}
+
+.LR-box {
+	background: none !important;
+}
+
+.LR-site-title { 
+display: none !important;
+}
+
+.LR-box-inner {
+	margin-top: 5px !important;
+}
+
+.LR-sign-up-submit {
+	font-size: 12px !important;
+    height: 35px !important;
+    line-height: 15px !important;
+}
+
+.LR-sign-up-input {
+	height: 35px !important;
+}
+
+.LR-site-share-container {
+	display: none !important;
+}
 /* Reset */
 
 
