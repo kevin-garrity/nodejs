@@ -165,6 +165,7 @@ app.get('/profile/:profileid', passportConf.isAuthenticated, userController.getP
 app.get('/profile', passportConf.isAuthenticated, userController.getProfile);
 app.post('/requestVideos', passportConf.isAuthenticated, sessionController.requestVideos);
 app.post('/videosReady', passportConf.isAuthenticated, sessionController.provideVideos);
+app.post('/submitEmail', homeController.submitEmail);
 
 
 /**
@@ -199,7 +200,6 @@ app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 app.get('/api/lob', apiController.getLob);
 app.get('/api/bitgo', apiController.getBitGo);
 app.post('/api/bitgo', apiController.postBitGo);
-
 /**
  * OAuth authentication routes. (Sign in)
  */

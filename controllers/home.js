@@ -1,6 +1,23 @@
 var User = require('../models/User');
 var Message = require('../models/Message');
 var Application = require('../models/Application');
+var Beta = require('../models/Beta');
+
+exports.submitEmail = function(req, res, next) {
+
+  console.log("We are here");
+
+  var beta = new Beta({
+    email: req.body.emailsubmit,
+    referrer: req.body.ref
+  });
+
+  beta.save(function(err) {
+    if (err) return next(err);
+    res.redirect('/?betasubmitted');
+  });
+
+};
 
 /**
  * GET /

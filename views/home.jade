@@ -3,6 +3,7 @@ extends layout
 block content
   //include partials/header
 
+
   section#banner(style='padding-top:40px;')
     .inner
       h1(style='font-size: 20px; font-weight: bold;')
@@ -11,15 +12,32 @@ block content
         | Get personalized feedback from NBA skills development coaches
       img(src='/splash.png')
       hr
-      p(style='font-size: 12px; font-weight: bold;') We're launching soon. Sign up to get early access
-      div#lr-widget(rel="FUSYFXDB")
-      script(src="http://ignition.launchrock.com/ignition-current.min.js")
+      #beta1
+        p(style='font-size: 12px; font-weight: bold;') We're launching soon. Sign up to get early access
+        form(method='POST', action='submitEmail')
+          input(type='hidden', name='_csrf', value=_csrf)
+          input(type='hidden', name='ref', id='refdiv')
+          input(type='text', placeholder='Email address here', name='emailsubmit', style='width: 50%; display: inline-block; margin: 0; vertical-align: bottom; background: white; color: black;')
+          input.button.special(type='submit', value='Go', style='width: 100px; min-width: 0; height: 49px; vertical-align: bottom;')
+        //div#lr-widget(rel="FUSYFXDB")
+        //script(src="http://ignition.launchrock.com/ignition-current.min.js")
+      #beta2(style='display: none;')
+        p(style='font-size: 14px; font-weight: bold;') Thanks -- we'll be in touch!
 
       footer
     
     //a.more.scrolly(href="#main")
 
-  article#main(style='display: none;')
+  script.
+    $("#refdiv").val(document.referrer)
+    
+    if(document.location.search.match("betasubmitted")){
+      $("#beta1").hide();
+      $("#beta2").show();
+    }
+    
+
+  //article#main(style='display: none;')
     section.wrapper.style1.container.special
       .row
         .4u.12u(narrower)
