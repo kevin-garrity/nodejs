@@ -1,0 +1,26 @@
+
+body {
+    background: -webkit-linear-gradient(left top, #c04848 , #480048); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, #c04848, #480048); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, #c04848, #480048); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, #c04848 , #480048); /* Standard syntax (must be last) */
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-weight: 300;
+    text-shadow: 1px 1px 2px #082b34; 
+}
+
+#submit{
+	font-size: 13px;
+    padding: 0 20px;
+    border-radius: 2.5px;
+    margin-left: -5px;
+    border: 0;
+    line-height: 40px;
+    background: #7ac124;
+    background-image: -webkit-linear-gradient(top, #7ac124, #6aa324);
+    background-image: -moz-linear-gradient(top, #7ac124, #6aa324);
+    background-image: -ms-linear-gradient(top, #7ac124, #6aa324);
+    background-image: -o-linear-gradient(top, #7ac124, #6aa324);
+    background-image: linear-gradient(to bottom, #7ac124, #6aa324);
+    color: white;
+}

@@ -1,10 +1,49 @@
-extends layout
+//extends layout
 
+!= css('landing')
+
+
+
+
+div(style='width: 70%; margin: 0 auto; color: white; margin-top: 10%;')
+  div(style='width: 100%; text-align: center;')
+    h1(style='font-size: 25px; letter-spacing: 1px; font-weight: 200;')
+      | Personalized coaching from NBA-level coaches.
+  br
+  div(style='width: 100%; text-align: center; font-size: 10px;')
+    div(style='width: 27%; margin: 2%; display: inline-block; ')
+      img(src='http://i.imgur.com/6Ugy6mX.gif', style='border: 10px solid rgba(0, 0, 0, 0.1); width: 100%; height: 200px; margin: 0; margin-bottom: 10px;')
+      | RECORD A VIDEO
+    div(style='width: 27%; margin: 2%; display: inline-block; ')
+      img(src='http://i.imgur.com/lY98jfd.gif', style='border: 10px solid rgba(0, 0, 0, 0.1); width: 100%; height: 200px; margin: 0; margin-bottom: 10px;')
+      | BOOK A COACH
+    div(style='width: 27%; margin: 2%; display: inline-block; ')
+      img(src='http://i.imgur.com/yDQDIxf.jpg', style='border: 10px solid rgba(0, 0, 0, 0.1); width: 100%; height: 200px; margin: 0; margin-bottom: 10px;')
+      | GET FEEDBACK
+  br
+  br
+  div(style='width: 100%; text-align: center;')
+    form#beta1(method='POST', action='submitEmail', style='border: 10px solid rgba(0, 0, 0, 0.1);display: inline;padding: 10px 2px;')
+      input(type='hidden', name='_csrf', value=_csrf)
+      input(type='hidden', name='ref', id='refdiv')
+      input(type='text', placeholder='Email address here', name='emailsubmit', style='    height: 40px; border: 0; border-radius: 5px; padding: 10px; font-size: 13px; width: 250px;')
+      input#submit(type='submit', value='Go')
+    #beta2(style='display: none;')
+      | Thanks -- we'll be in touch!
+
+script.
+  document.getElementById("refdiv").value = document.referrer
+  
+  if(document.location.search.match("betasubmitted")){
+    document.getElementById("beta1").style.display = "none";
+    document.getElementById("beta2").style.display = "";
+  }
+  
 block content
   //include partials/header
 
 
-  section#banner(style='padding-top:40px;')
+  //section#banner(style='padding-top:40px;')
     .inner
       h1(style='font-size: 20px; font-weight: bold;')
           | To beat the best, you have to learn from the best
@@ -28,13 +67,6 @@ block content
     
     //a.more.scrolly(href="#main")
 
-  script.
-    $("#refdiv").val(document.referrer)
-    
-    if(document.location.search.match("betasubmitted")){
-      $("#beta1").hide();
-      $("#beta2").show();
-    }
     
 
   //article#main(style='display: none;')
@@ -63,4 +95,4 @@ block content
                 h3
                   | Train
                 p
-                  | Start working with your coach through our online video platform and keep track of your progress.</p>
+                  | Start working with your coach through our online video platform and keep track of your progress.</p> */
