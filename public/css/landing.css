@@ -1,10 +1,18 @@
 
+head, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    border: 0;
+    min-height: 100%;
+    scroll-behavior: smooth; 
+}
 body {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
     font-weight: 300;
     text-shadow: 1px 1px 2px #082b34; 
     margin: 0;
-    background: #2d2d2d;
+    background: #1F1F1F;
 }
 #topbody{
     background: -webkit-linear-gradient(left top, #c04848 , #480048); /* For Safari 5.1 to 6.0 */
@@ -13,6 +21,13 @@ body {
     background: linear-gradient(to bottom right, #c04848 , #480048); /* Standard syntax (must be last) */
     box-shadow: 0px 10px 10px 1px rgba(0, 0, 0, .2);
 
+    width: 100%;
+    margin: 0 auto;
+    min-height: 100%;
+    color: white;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
 }
 
 #submit{
@@ -29,4 +44,21 @@ body {
     background-image: -o-linear-gradient(top, #7ac124, #6aa324);
     background-image: linear-gradient(to bottom, #7ac124, #6aa324);
     color: white;
+}
+
+#testimonials {
+    border: 3px solid rgba(256,256,256,0.65); 
+    font-weight: bold; 
+    border-radius: 25px; 
+    padding: 1% 2%; 
+    font-size: 12px; 
+    cursor: pointer; 
+    color: rgba(256,256,256,0.65) !important; 
+    text-decoration: none; 
+    text-shadow: none; 
+    background: transparent;
+}
+#testimonials:hover {
+    border-color: rgba(256,256,256,0.8) !important;
+    color: rgba(256,256,256,0.8) !important;
 }
