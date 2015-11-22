@@ -1,73 +1,88 @@
 //extends layout
 
 != css('landing')
+script(src='https://code.jquery.com/jquery-2.1.4.js')
+link(rel="stylesheet",href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css")
+script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+
 <title>Rookie</title>
 
-div#logo(style='display: none; color: white; font-weight: bold; text-shadow: none; background: transparent; position: absolute; left: 2%; top: 2%; font-family: "Rouge Script", cursive;')
-  strong(style='font-size: 18px;') R
-  strong(style='border-bottom: 2px solid white; padding-bottom: -3.5px;') ooki
-  | e
+
 
 div#topbody(style='width: 100%; margin: 0; min-height: 75%; color: white; padding: 0;')
-  div(style='width: 100%; text-align: center;')
-    br
+  #postsignup(style='display: none; width: 40%; margin: 0 auto; border-radius: 10px; padding: 2.5%; margin-top: 10%;  text-align: center; background: rgba(0,0,0,0.2); ')
     h1(style='font-size: 25px; letter-spacing: 1px; font-weight: 200;')
-      | Personalized coaching from NBA-level coaches.
-  div(style='width: 100%; text-align: center; font-size: 10px;')
-    div(style='width: 27%; margin: 2%; display: inline-block; ')
-      img(src='http://i.imgur.com/6Ugy6mX.gif', style='border: 10px solid rgba(0, 0, 0, 0.1); width: 100%; height: 40%; margin: 0; margin-bottom: 10px;')
-      strong STEP 1. 
-      | RECORD A VIDEO
-    div(style='width: 27%; margin: 2%; display: inline-block; ')
-      img(src='http://i.imgur.com/lY98jfd.gif', style='border: 10px solid rgba(0, 0, 0, 0.1); width: 100%; height: 40%; margin: 0; margin-bottom: 10px;')
-      strong STEP 2.
-      | BOOK A COACH
-    div(style='width: 27%; margin: 2%; display: inline-block; ')
-      img(src='http://i.imgur.com/yDQDIxf.jpg', style='border: 10px solid rgba(0, 0, 0, 0.1); width: 100%; height: 40%; margin: 0; margin-bottom: 10px;')
-      strong STEP 3.
-      | GET FEEDBACK
-  br
-  br
-  div(style='width: 100%; text-align: center;')
-    #msg
-      | Sign up to get early access!
+      | Thanks for signing up!
+    | Want to move up in line? Follow us on social media for first dibs!
+    #social(style='display: block; margin-top: 5%;')
+      a(href='https://www.instagram.com/tryrookie/')
+        img(src='http://i.imgur.com/uOpZPnf.png', style='margin: 1%; border-radius: 10px;')
+      a(href='https://twitter.com/tryrookie/')
+        img(src='http://i.imgur.com/Ql16Jld.png', style='margin: 1%; border-radius: 10px;')
+  #presignup
+    div(style='width: 100%; text-align: center;')
+      br
+      h1(style='font-size: 25px; letter-spacing: 1px; font-weight: 200;')
+        | Personalized coaching from NBA-level coaches.
+    div(style='width: 100%; text-align: center; font-size: 10px;')
+      div(style='width: 27%; margin: 2%; display: inline-block; ')
+        img(src='http://i.imgur.com/6Ugy6mX.gif', style='border: 10px solid rgba(0, 0, 0, 0.1); width: 100%; height: 35%; margin: 0; margin-bottom: 10px;')
+        strong STEP 1.  
+        | RECORD A VIDEO
+      div(style='width: 27%; margin: 2%; display: inline-block; ')
+        img(src='http://i.imgur.com/lY98jfd.gif', style='border: 10px solid rgba(0, 0, 0, 0.1); width: 100%; height: 35%; margin: 0; margin-bottom: 10px;')
+        strong STEP 2. 
+        | BOOK A COACH
+      div(style='width: 27%; margin: 2%; display: inline-block; ')
+        img(src='http://i.imgur.com/yDQDIxf.jpg', style='border: 10px solid rgba(0, 0, 0, 0.1); width: 100%; height: 35%; margin: 0; margin-bottom: 10px;')
+        strong STEP 3. 
+        | GET FEEDBACK
     br
-    form#beta1(method='POST', action='submitEmail', style='border: 10px solid rgba(0, 0, 0, 0.1);display: inline;padding: 10px 2px;')
-      input(type='hidden', name='_csrf', value=_csrf)
-      input(type='hidden', name='ref', id='refdiv')
-      input(type='text', placeholder='Email address here', name='emailsubmit', style='    height: 40px; border: 0; border-radius: 5px; padding: 10px; font-size: 13px; width: 250px;')
-      input#submit(type='submit', value='Go')
-    #beta2(style='display: none;')
-      | Thanks -- we'll be in touch!
-  br
-  br
-  br
-  div(style='width: 100%; text-align: center;')
-    a#testimonials(href='#test', type='button')
-      | Testimonials ↓
-div(style='width: 90%; margin: 0 auto; color: white; text-align: center; font-size: 10px;')
-    br
-    br
-    div#test(style='width: 100%; font-size: 13px; font-weight: bold; margin-top: 1%;')
-      | TESTIMONIALS
-    br
-    div(style='width: 27%; margin: 2%; margin-top: 0; vertical-align: top; display: inline-block; text-align: left; font-size: 12px; background: rgba(0,0,0,0.1); padding: 1%; border-radius: 5px;') 
-      p "I can't believe an NBA shooting coach just gave me personalized feedback on my shot! Thank you so much to Rookie for the early preview of what's in store. It was an awesome experience."
-      p(style='font-size: 10px; text-transform: uppercase;') Kyle Idris, 16, San Francisco
-    div(style='width: 27%; margin: 2%; margin-top: 0; vertical-align: top; display: inline-block; text-align: left; font-size: 12px; background: rgba(0,0,0,0.1); padding: 1%; border-radius: 5px;') 
-      p "I signed up and got a preview of Rookie. My coach had worked with Steve Nash on the Suns. I'm still in a bit of shock that I got coached by the same guy. Can't wait to get on the court later."
-      p(style='font-size: 10px; text-transform: uppercase;') Kevaun Washington, 14, Oklahoma City
-    div(style='width: 27%; margin: 2%; margin-top: 0; vertical-align: top; display: inline-block; text-align: left; font-size: 12px; background: rgba(0,0,0,0.1); padding: 1%; border-radius: 5px;') 
-      p "I'm so happy I got to try Rookie today. I already feel way more confidence about how to read my defender in a one-on-one situation. Thanks again Coach Church!"
-      p(style='font-size: 10px; text-transform: uppercase;') Ben Harquail, 17, Boston
-script.
-  document.getElementById("refdiv").value = document.referrer
-  
-  if(document.location.search.match("betasubmitted")){
-    document.getElementById("beta1").style.display = "none";
-    document.getElementById("msg").style.display = "none";
-    document.getElementById("beta2").style.display = "";
-  }
+    div(style='width: 100%; text-align: center;')
+      #msg
+        | Some players our coaches have worked with...
+      img(src='http://i.imgur.com/ouhMtQ1.png?1', style='margin: 1%; box-shadow: inset 0px 0px 10px 5px rgba(0,0,0,0.15); width: 75px; height: 75px; background: rgba(0,0,0,0.2); border-radius: 150px;')
+      img(src='http://i.imgur.com/6bMsUgz.png?1', style='margin: 1%; box-shadow: inset 0px 0px 10px 5px rgba(0,0,0,0.15); width: 75px; height: 75px; background: rgba(0,0,0,0.2); border-radius: 150px;')
+      img(src='http://i.imgur.com/pq9XMsV.png?1', style='margin: 1%; box-shadow: inset 0px 0px 10px 5px rgba(0,0,0,0.15); width: 75px; height: 75px; background: rgba(0,0,0,0.2); border-radius: 150px;')
+      br
+      br
+    div(style='width: 100%; text-align: center;')
+      form#beta1(method='POST', action='submitEmail', style='border: 10px solid rgba(0, 0, 0, 0.1);display: inline;padding: 10px 2px;')
+        input(type='hidden', name='_csrf', value=_csrf)
+        input(type='hidden', name='ref', id='refdiv')
+        input(type='text', placeholder='Enter your email for early access!', name='emailsubmit', style='    height: 40px; border: 0; color: black; border-radius: 5px; padding: 10px; font-size: 13px; width: 250px;')
+        input#submit(type='submit', value='Go')
+      #beta2(style='display: none;')
+        | Thanks -- we'll be in touch!
+      a#testimonials(href='#test', type='button')
+        | Testimonials ↓
+      #invites(style='display: block; margin-top: 1%; width: 50%; margin: 0 auto; padding-top: 25px;')
+        .progress(style='background: #cdcdcd;')
+          .progress-bar(role="progressbar", aria-valuenow="70", aria-valuemin="0", aria-valuemax="100", style='width: 75%;')
+            span.sr-only
+            | 437/500 invites sent
+    div(style='width: 90%; margin: 0 auto; color: white; text-align: center; font-size: 10px;')
+        br
+        br
+        div#test(style='width: 100%; font-size: 13px; font-weight: bold; margin-top: 1%;')
+          | TESTIMONIALS
+        br
+        div(style='width: 27%; margin: 2%; margin-top: 0; vertical-align: top; display: inline-block; text-align: left; font-size: 12px; background: rgba(0,0,0,0.1); padding: 1%; border-radius: 5px;') 
+          p "I can't believe an NBA shooting coach just gave me personalized feedback on my shot! Thank you so much to Rookie for the early preview of what's in store. It was an awesome experience."
+          p(style='font-size: 10px; text-transform: uppercase;') Kyle Idris, 16, San Francisco
+        div(style='width: 27%; margin: 2%; margin-top: 0; vertical-align: top; display: inline-block; text-align: left; font-size: 12px; background: rgba(0,0,0,0.1); padding: 1%; border-radius: 5px;') 
+          p "I signed up and got a preview of Rookie. My coach had worked with Steve Nash on the Suns. I'm still in a bit of shock that I got coached by the same guy. Can't wait to get on the court later."
+          p(style='font-size: 10px; text-transform: uppercase;') Kevaun Washington, 14, Oklahoma City
+        div(style='width: 27%; margin: 2%; margin-top: 0; vertical-align: top; display: inline-block; text-align: left; font-size: 12px; background: rgba(0,0,0,0.1); padding: 1%; border-radius: 5px;') 
+          p "I'm so happy I got to try Rookie today. I already feel way more confidence about how to read my defender in a one-on-one situation. Thanks again Coach Church!"
+          p(style='font-size: 10px; text-transform: uppercase;') Ben Harquail, 17, Boston
+  script.
+    document.getElementById("refdiv").value = document.referrer
+    
+    if(document.location.search.match("betasubmitted")){
+      document.getElementById("presignup").style.display = "none";
+      document.getElementById("postsignup").style.display = "";
+    }
 
 block content
   //include partials/header
