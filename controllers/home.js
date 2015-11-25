@@ -3,6 +3,27 @@ var Message = require('../models/Message');
 var Application = require('../models/Application');
 var Beta = require('../models/Beta');
 
+
+function sendEmail(add, rname, msg, subj) {
+
+
+  var from = 'simon@tryrookie.com';
+  var name = rname;
+  var body = msg;
+  var to = add;
+  var subject = subj;
+
+  var mailOptions = {
+    to: to,
+    from: from,
+    subject: subject,
+    text: body
+  };
+
+  transporter.sendMail(mailOptions, function(err) {
+    return;
+  });
+};
 exports.submitEmail = function(req, res, next) {
 
   console.log("We are here");
@@ -14,10 +35,13 @@ exports.submitEmail = function(req, res, next) {
 
   beta.save(function(err) {
     if (err) return next(err);
+    sendEmail(email, email, 'Hey there!\n\nThank you for signing up for Rookie; the only platform that allows athletes to work with the best skills coaches in the world.\n\nOver the next couple of months we will start inviting people like you to try Rookie. Getting an invite allows you to:\n1. Choose the best coaches on the platform\n2.Get more time with your coaches.\n3.Free pro-level skills assessment and personalized skills program\n\nYou are the 447th person to sign up. For every five of your friends that sign-up, we will move you up ten spots on our waiting list.\n\nAgain, thank you for signing up! Let me know if you have any questions.\nSimon', 'Congratulations on signing up!');
     res.redirect('/?betasubmitted');
   });
 
 };
+
+
 
 /**
  * GET /
