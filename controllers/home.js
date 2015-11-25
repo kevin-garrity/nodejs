@@ -2,29 +2,53 @@ var User = require('../models/User');
 var Message = require('../models/Message');
 var Application = require('../models/Application');
 var Beta = require('../models/Beta');
+var nodemailer = require('nodemailer');
+var secrets = require('../config/secrets');
+var smtpTransport = require('nodemailer-smtp-transport');
 
 
-function sendEmail(add, rname, msg, subj) {
 
-
-  var from = 'simon@tryrookie.com';
-  var name = rname;
-  var body = msg;
-  var to = add;
-  var subject = subj;
-
-  var mailOptions = {
-    to: to,
-    from: from,
-    subject: subject,
-    text: body
-  };
-
-  transporter.sendMail(mailOptions, function(err) {
-    return;
-  });
-};
 exports.submitEmail = function(req, res, next) {
+
+
+  function sendEmail(add, rname, msg, subj) {
+
+    console.log("Called sendEmail");
+
+    var from = 'simon@tryrookie.com';
+    var name = rname;
+    var body = msg;
+    var to = add;
+    var subject = subj;
+
+    console.log(secrets.mandrill.user);
+
+    var transporter = nodemailer.createTransport((smtpTransport({
+      host: 'smtp.mandrillapp.com',
+      secureConnection: false, // use SSL
+      port: 587, // port for secure SMTP
+      auth: {
+        user: secrets.mandrill.user,
+        pass: secrets.mandrill.password
+      }
+    })));
+
+    console.log("MADE IT HERE");
+    var mailOptions = {
+      to: to,
+      from: from,
+      subject: subject,
+      text: body
+    };
+
+    console.log("HELLLO");
+
+    transporter.sendMail(mailOptions, function(err) {
+      console.log(err);
+      console.log("HELLO?");
+      return;
+    });
+  };
 
   console.log("We are here");
 
@@ -35,7 +59,8 @@ exports.submitEmail = function(req, res, next) {
 
   beta.save(function(err) {
     if (err) return next(err);
-    sendEmail(email, email, 'Hey there!\n\nThank you for signing up for Rookie; the only platform that allows athletes to work with the best skills coaches in the world.\n\nOver the next couple of months we will start inviting people like you to try Rookie. Getting an invite allows you to:\n1. Choose the best coaches on the platform\n2.Get more time with your coaches.\n3.Free pro-level skills assessment and personalized skills program\n\nYou are the 447th person to sign up. For every five of your friends that sign-up, we will move you up ten spots on our waiting list.\n\nAgain, thank you for signing up! Let me know if you have any questions.\nSimon', 'Congratulations on signing up!');
+    console.log("HI?");
+    sendEmail(req.body.emailsubmit, req.body.emailsubmit, 'Hey there!\n\nThank you for signing up for Rookie; the only platform that allows athletes to work with the best skills coaches in the world.\n\nOver the next couple of months we will start inviting people like you to try Rookie. Getting an invite allows you to:\n1. Choose the best coaches on the platform\n2.Get more time with your coaches.\n3.Free pro-level skills assessment and personalized skills program\n\nYou are the 447th person to sign up. For every five of your friends that sign-up, we will move you up ten spots on our waiting list.\n\nAgain, thank you for signing up! Let me know if you have any questions.\nSimon', 'Congratulations on signing up!');
     res.redirect('/?betasubmitted');
   });
 

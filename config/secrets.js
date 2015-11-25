@@ -32,8 +32,8 @@ module.exports = {
   },
   
   mandrill: {
-    user: process.env.MANDRILL_USER || 'naeem.talukdar@gmail.com',
-    password: process.env.MANDRILL_PASSWORD || '-wR-428KxNBZzY44LQnxAg'
+    user: 'naeem.talukdar@gmail.com',
+    password: '-wR-428KxNBZzY44LQnxAg'
   },
 
   sendgrid: {
